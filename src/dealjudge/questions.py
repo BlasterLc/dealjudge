@@ -3,11 +3,11 @@
 from typing import Any
 
 LEVEL_CRITERIA = {
-    "sin_oferta": "el precio actual está menos de 5 % bajo la mediana de 90 días",
+    "no_deal": "el precio actual está menos de 5 % bajo la mediana de 90 días",
     "marginal": "el precio actual está entre 5 % y 10 % bajo la mediana de 90 días",
-    "buena": "el precio actual está entre 10 % y 25 % bajo la mediana de 90 días",
-    "muy_buena": "el precio actual está entre 25 % y 40 % bajo la mediana de 90 días",
-    "excepcional": "el precio actual está 40 % o más bajo la mediana de 90 días",
+    "good": "el precio actual está entre 10 % y 25 % bajo la mediana de 90 días",
+    "very_good": "el precio actual está entre 25 % y 40 % bajo la mediana de 90 días",
+    "exceptional": "el precio actual está 40 % o más bajo la mediana de 90 días",
 }
 
 

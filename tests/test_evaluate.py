@@ -39,12 +39,12 @@ def test_calibration_bins_and_ece_on_hand_computed_points():
 
 
 def judgement(level_conf):
-    return Judgement(0.95, "buena", level_conf, 0.95, decide(0.95, "buena", level_conf, 0.95, 90), 5.0, False)
+    return Judgement(0.95, "good", level_conf, 0.95, decide(0.95, "good", level_conf, 0.95, 90), 5.0, False)
 
 
 def test_calibrate_threshold_picks_the_only_optimal_candidate():
-    alert = Truth(True, "buena", True, "avisar")
-    warn = Truth(True, "buena", True, "avisar_con_advertencia")
+    alert = Truth(True, "good", True, "alert")
+    warn = Truth(True, "good", True, "alert_with_warning")
     dev = [(judgement(0.85), alert, 90)] * 4 + [(judgement(0.75), warn, 90)] * 4
     assert calibrate_threshold(dev) == 0.8
 
@@ -52,17 +52,17 @@ def test_calibrate_threshold_picks_the_only_optimal_candidate():
 def test_calibrate_threshold_warns_where_a_decisive_answer_is_a_coin_flip():
     """Group A (conf 0.3): the decisive answer is right 4 of 10 times, so warning is worth more.
     Group B (conf 0.6): always right, so it must stay decisive. Plain accuracy would pick <= 0.3."""
-    alert, silent = Truth(True, "buena", True, "avisar"), Truth(False, "sin_oferta", False, "callar")
+    alert, silent = Truth(True, "good", True, "alert"), Truth(False, "no_deal", False, "stay_silent")
     dev = [(judgement(0.3), alert, 90)] * 4 + [(judgement(0.3), silent, 90)] * 6 + [(judgement(0.6), alert, 90)] * 10
     assert calibrate_threshold(dev) == 0.6
 
 
 def test_llm_action_mapping():
-    good = LlmJudgement(True, "buena", True, 0, 0, 0.0, False)
-    assert llm_action(good, 90) == "avisar"
-    assert llm_action(good, 5) == "avisar_con_advertencia"
-    assert llm_action(LlmJudgement(True, "marginal", True, 0, 0, 0.0, False), 90) == "callar"
-    assert llm_action(LlmJudgement(False, "", False, 0, 0, 0.0, True), 90) == "avisar_con_advertencia"
+    good = LlmJudgement(True, "good", True, 0, 0, 0.0, False)
+    assert llm_action(good, 90) == "alert"
+    assert llm_action(good, 5) == "alert_with_warning"
+    assert llm_action(LlmJudgement(True, "marginal", True, 0, 0, 0.0, False), 90) == "stay_silent"
+    assert llm_action(LlmJudgement(False, "", False, 0, 0, 0.0, True), 90) == "alert_with_warning"
 
 
 def test_cost_and_latency_helpers():
@@ -125,12 +125,12 @@ class FakeJudge:
 
     def judge(self, state, history_days, fits_user=None):
         self.fits_seen.append(fits_user)
-        return Judgement(0.9, "buena", 0.9, 0.9, decide(0.9, "buena", 0.9, 0.9, history_days), 7.0, False)
+        return Judgement(0.9, "good", 0.9, 0.9, decide(0.9, "good", 0.9, 0.9, history_days), 7.0, False)
 
 
 class FakeLlm:
     def judge(self, state):
-        return LlmJudgement(True, "buena", True, 300, 20, 400.0, False)
+        return LlmJudgement(True, "good", True, 300, 20, 400.0, False)
 
 
 def test_run_evaluation_writes_a_complete_report(tmp_path):

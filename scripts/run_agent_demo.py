@@ -15,7 +15,7 @@ from dealjudge.handler import AlertLedger, DealjudgeHandler, VerdictLog
 from dealjudge.judge import Judge
 from dealjudge.policy import DEFAULT_THRESHOLD
 
-SCENARIOS = ("pico_inflado", "baja_genuina", "fluctuacion_normal", "historial_corto")
+SCENARIOS = ("inflated_spike", "genuine_drop", "normal_fluctuation", "short_history")
 
 
 def calibrated_threshold(path: str = "results/evaluation.json") -> float:

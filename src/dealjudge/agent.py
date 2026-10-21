@@ -1,4 +1,4 @@
-"""The Strands agent: one tool, ``enviar_aviso``, guarded by DealjudgeHandler."""
+"""The Strands agent: one tool, ``send_alert``, guarded by DealjudgeHandler."""
 
 from collections.abc import Callable
 
@@ -6,14 +6,14 @@ from dealjudge.handler import DealjudgeHandler, VerdictLog
 from dealjudge.notice import write_notice
 
 SYSTEM_PROMPT = (
-    "Eres Dealjudge. Para cada oferta que recibas, llama a la herramienta enviar_aviso con su "
+    "Eres Dealjudge. Para cada oferta que recibas, llama a la herramienta send_alert con su "
     "offer_id, el nombre del producto y el precio actual. La herramienta puede rechazar el aviso: "
     "si lo rechaza, no insistas ni inventes otro aviso."
 )
 
 
 def build_tools(log: VerdictLog, outbox: list, bedrock_client=None) -> dict[str, Callable]:
-    def enviar_aviso(offer_id: str, product: str, price: int) -> str:
+    def send_alert(offer_id: str, product: str, price: int) -> str:
         """Send the user an alert about an offer.
 
         Args:
@@ -28,7 +28,7 @@ def build_tools(log: VerdictLog, outbox: list, bedrock_client=None) -> dict[str,
         outbox.append({"offer_id": offer_id, "product": product, "action": judgement.decision.action, "notice": notice})
         return notice
 
-    return {"enviar_aviso": enviar_aviso}
+    return {"send_alert": send_alert}
 
 
 def build_agent(handler: DealjudgeHandler, log: VerdictLog, outbox: list, model=None, bedrock_client=None):
@@ -38,7 +38,7 @@ def build_agent(handler: DealjudgeHandler, log: VerdictLog, outbox: list, model=
     tools = build_tools(log, outbox, bedrock_client)
     return Agent(
         model=model or BedrockModel(model_id="amazon.nova-lite-v1:0", region_name="us-east-1"),
-        tools=[tool(tools["enviar_aviso"])],
+        tools=[tool(tools["send_alert"])],
         interventions=[handler],
         system_prompt=SYSTEM_PROMPT,
     )

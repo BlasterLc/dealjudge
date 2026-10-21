@@ -4,11 +4,11 @@ The model is never the gate. Decider measures; this function decides. It is pure
 has no SDK import, so a logged answer can be replayed later against any threshold.
 
 Precedence (first match wins):
-1. a malformed number or an unknown level   -> avisar_con_advertencia
-2. fewer than 14 days of history            -> avisar_con_advertencia
-3. confidence below the threshold           -> avisar_con_advertencia
-4. confident, real, good level, fits user   -> avisar
-5. confident and anything else              -> callar
+1. a malformed number or an unknown level   -> alert_with_warning
+2. fewer than 14 days of history            -> alert_with_warning
+3. confidence below the threshold           -> alert_with_warning
+4. confident, real, good level, fits user   -> alert
+5. confident and anything else              -> stay_silent
 """
 
 import math
@@ -16,10 +16,10 @@ from dataclasses import dataclass
 
 from dealjudge.levels import LEVELS
 
-ACTIONS = ("avisar", "callar", "avisar_con_advertencia")
+ACTIONS = ("alert", "stay_silent", "alert_with_warning")
 DEFAULT_THRESHOLD = 0.70
 MIN_HISTORY_DAYS = 14
-GOOD_LEVELS = ("buena", "muy_buena", "excepcional")
+GOOD_LEVELS = ("good", "very_good", "exceptional")
 
 
 @dataclass(frozen=True)
@@ -30,7 +30,7 @@ class Decision:
 
 
 def _warn(reason: str, confidence: float = 0.0) -> Decision:
-    return Decision("avisar_con_advertencia", confidence, reason)
+    return Decision("alert_with_warning", confidence, reason)
 
 
 def _valid(p: float) -> bool:
@@ -60,5 +60,5 @@ def decide(
     if confidence < threshold:
         return _warn("No estoy seguro de este veredicto.", confidence)
     if is_real_p >= 0.5 and level in GOOD_LEVELS and fits_p >= 0.5:
-        return Decision("avisar", confidence, "Descuento real que cumple lo que pides.")
-    return Decision("callar", confidence, "No es una oferta real o no cumple lo que pides.")
+        return Decision("alert", confidence, "Descuento real que cumple lo que pides.")
+    return Decision("stay_silent", confidence, "No es una oferta real o no cumple lo que pides.")

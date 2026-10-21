@@ -1,10 +1,10 @@
 """A Strands InterventionHandler that judges an offer before the alert tool runs.
 
-``before_tool_call`` runs before ``enviar_aviso`` executes. It rebuilds the price history
+``before_tool_call`` runs before ``send_alert`` executes. It rebuilds the price history
 of the offer, asks the judge, and maps the action to the SDK:
 
-- avisar / avisar_con_advertencia -> Proceed (the verdict is kept for the notice)
-- callar                          -> Deny
+- alert / alert_with_warning -> Proceed (the verdict is kept for the notice)
+- stay_silent                          -> Deny
 - the same offer at the same price and action already announced -> Deny (no spam)
 
 The model is never the gate: Decider measures, ``decide`` in policy.py decides.
@@ -19,7 +19,7 @@ from strands.interventions import Deny, InterventionHandler, Proceed
 from dealjudge.history import HistoryStats, PricePoint, UserProfile, compute_stats, fits_profile, render_state
 from dealjudge.judge import Judge, Judgement
 
-TOOL_NAME = "enviar_aviso"
+TOOL_NAME = "send_alert"
 
 Source = Callable[[str], tuple[Sequence[PricePoint], int | None]]
 """offer_id -> (price series, advertised list price or None). Raises KeyError if unknown."""
@@ -65,7 +65,7 @@ class DealjudgeHandler(InterventionHandler):
             self._judge.judge, state, stats.days_of_history, fits_profile(stats, self._profile)
         )
         action = judgement.decision.action
-        if action == "callar":
+        if action == "stay_silent":
             return Deny(judgement.decision.reason)
         if not self._ledger.should_notify(offer_id, stats.current, action):
             return Deny("Ya se avisó de esta oferta al mismo precio.")

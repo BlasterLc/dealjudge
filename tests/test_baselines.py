@@ -4,12 +4,12 @@ from dealjudge.baselines import LlmJudge, cyber_watch_rule
 
 
 def test_rule_alerts_on_a_20_percent_drop_and_not_on_19():
-    assert cyber_watch_rule(100, 80) == "avisar"
-    assert cyber_watch_rule(100, 81) == "callar"
+    assert cyber_watch_rule(100, 80) == "alert"
+    assert cyber_watch_rule(100, 81) == "stay_silent"
 
 
 def test_rule_ignores_a_missing_previous_price():
-    assert cyber_watch_rule(0, 50) == "callar"
+    assert cyber_watch_rule(0, 50) == "stay_silent"
 
 
 class FakeBedrock:
@@ -27,13 +27,13 @@ class FakeBedrock:
         }
 
 
-VALID = json.dumps({"is_real": True, "level": "buena", "fits_user": False})
+VALID = json.dumps({"is_real": True, "level": "good", "fits_user": False})
 
 
 def test_llm_judge_parses_json_inside_a_code_fence():
     client = FakeBedrock("```json\n" + VALID + "\n```")
     j = LlmJudge(client=client).judge("estado")
-    assert (j.is_real, j.level, j.fits_user) == (True, "buena", False)
+    assert (j.is_real, j.level, j.fits_user) == (True, "good", False)
     assert (j.input_tokens, j.output_tokens, j.latency_ms) == (321, 17, 480)
     assert j.failed is False
     call = client.calls[0]

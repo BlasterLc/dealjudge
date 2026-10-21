@@ -25,14 +25,14 @@ def template_notice(judgement: Judgement, stats: HistoryStats, product: str) -> 
         f"{product}: ahora {_clp(stats.current)}, {stats.real_discount_pct:.0f} % bajo la mediana de "
         f"90 días ({_clp(stats.baseline_median)}). Mínimo registrado: {_clp(stats.min_price)}."
     )
-    if judgement.decision.action == "avisar_con_advertencia":
+    if judgement.decision.action == "alert_with_warning":
         text += f" Ten cautela: {judgement.decision.reason}"
     return text
 
 
 def write_notice(judgement: Judgement, stats: HistoryStats, product: str, bedrock_client=None) -> str:
     warning = ""
-    if judgement.decision.action == "avisar_con_advertencia":
+    if judgement.decision.action == "alert_with_warning":
         warning = f"- incluye una advertencia clara: {judgement.decision.reason}"
     prompt = _PROMPT.format(
         product=product,

@@ -13,7 +13,7 @@ from dealjudge.judge import Judge
 from dealjudge.notice import write_notice
 from dealjudge.policy import DEFAULT_THRESHOLD
 
-DEMO_SCENARIOS = ("pico_inflado", "pico_inflado", "baja_genuina", "baja_genuina", "historial_corto", "fluctuacion_normal")
+DEMO_SCENARIOS = ("inflated_spike", "inflated_spike", "genuine_drop", "genuine_drop", "short_history", "normal_fluctuation")
 STORES = ("Casa Aurora", "Electro Faro", "Mercado Sur", "Bazar Cobre", "Tienda Norte", "Almacén Luna")
 
 
@@ -42,7 +42,7 @@ def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None) -> Non
         action = j.decision.action
         notice = (
             write_notice(j, stats, case.product, bedrock_client)
-            if action != "callar"
+            if action != "stay_silent"
             else f"No se avisó. {j.decision.reason}"
         )
         cases.append(

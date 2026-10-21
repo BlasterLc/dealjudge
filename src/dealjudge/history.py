@@ -22,7 +22,7 @@ class PricePoint:
 @dataclass(frozen=True)
 class UserProfile:
     max_price: int | None = None
-    min_level: str = "buena"
+    min_level: str = "good"
 
 
 @dataclass(frozen=True)

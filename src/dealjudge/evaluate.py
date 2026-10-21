@@ -71,16 +71,16 @@ def llm_cost_usd(input_tokens: int, output_tokens: int) -> float:
 def llm_action(j: LlmJudgement, history_days: int) -> str:
     """The LLM answers the same three questions; the same deterministic rule turns them into an action."""
     if j.failed or history_days < MIN_HISTORY_DAYS:
-        return "avisar_con_advertencia"
-    return "avisar" if j.is_real and j.fits_user and j.level in GOOD_LEVELS else "callar"
+        return "alert_with_warning"
+    return "alert" if j.is_real and j.fits_user and j.level in GOOD_LEVELS else "stay_silent"
 
 
 def _utility(action: str, truth_action: str) -> float:
-    """An exact hit is worth 1. A warning when the truth is decisive (avisar/callar) is worth half:
+    """An exact hit is worth 1. A warning when the truth is decisive (alert/stay_silent) is worth half:
     it is a cheaper mistake than a wrong alert or a wrong silence. Anything else is worth 0."""
     if action == truth_action:
         return 1.0
-    return 0.5 if action == "avisar_con_advertencia" and truth_action != "avisar_con_advertencia" else 0.0
+    return 0.5 if action == "alert_with_warning" and truth_action != "alert_with_warning" else 0.0
 
 
 def calibrate_threshold(dev, candidates=CANDIDATE_THRESHOLDS) -> float:
@@ -107,12 +107,12 @@ def _rule_action(case: Case) -> str:
 
 
 def _alerts(actions) -> list[bool]:
-    return [a != "callar" for a in actions]
+    return [a != "stay_silent" for a in actions]
 
 
 def _warning_summary(rows) -> dict:
     """How often Decider commits to an answer, and how often that answer is right."""
-    decisive = [r for r in rows if r["decider"] != "avisar_con_advertencia"]
+    decisive = [r for r in rows if r["decider"] != "alert_with_warning"]
     return {
         "coverage": round(len(decisive) / len(rows), 3) if rows else 0.0,
         "decisive_accuracy": round(accuracy([r["decider"] for r in decisive],

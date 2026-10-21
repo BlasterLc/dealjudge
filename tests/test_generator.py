@@ -1,7 +1,7 @@
 from dealjudge.generator import SCENARIOS, Truth, generate_cases, truth_for
 from dealjudge.history import HistoryStats, UserProfile, compute_stats
 
-GOOD = {"buena", "muy_buena", "excepcional"}
+GOOD = {"good", "very_good", "exceptional"}
 
 
 def stats_for(real_discount_pct, current=30000, days=90):
@@ -29,7 +29,7 @@ def test_generate_cases_is_deterministic_and_sized():
 
 
 def test_inflated_spike_is_never_real():
-    cases = cases_of("pico_inflado")
+    cases = cases_of("inflated_spike")
     assert cases
     for c in cases:
         assert c.truth.is_real is False
@@ -37,7 +37,7 @@ def test_inflated_spike_is_never_real():
 
 
 def test_genuine_drop_is_real_with_a_good_level():
-    cases = cases_of("baja_genuina")
+    cases = cases_of("genuine_drop")
     assert cases
     for c in cases:
         assert c.truth.is_real is True
@@ -45,34 +45,34 @@ def test_genuine_drop_is_real_with_a_good_level():
 
 
 def test_limit_cases_sit_on_the_edge():
-    for c in cases_of("limite_10"):
+    for c in cases_of("edge_10"):
         assert 9.5 <= compute_stats(c.series).real_discount_pct <= 10.5
-    for c in cases_of("limite_25"):
+    for c in cases_of("edge_25"):
         assert 24.5 <= compute_stats(c.series).real_discount_pct <= 25.5
 
 
 def test_short_history_warns():
-    cases = cases_of("historial_corto")
+    cases = cases_of("short_history")
     assert cases
     for c in cases:
         assert len(c.series) < 14
-        assert c.truth.action == "avisar_con_advertencia"
+        assert c.truth.action == "alert_with_warning"
 
 
 def test_truth_alerts_on_a_real_discount_that_fits():
-    truth = truth_for(stats_for(30.0), UserProfile(max_price=None, min_level="buena"), None)
-    assert truth == Truth(is_real=True, level="muy_buena", fits_user=True, action="avisar")
+    truth = truth_for(stats_for(30.0), UserProfile(max_price=None, min_level="good"), None)
+    assert truth == Truth(is_real=True, level="very_good", fits_user=True, action="alert")
 
 
 def test_truth_is_silent_on_a_small_discount():
-    assert truth_for(stats_for(3.0), UserProfile(), None).action == "callar"
+    assert truth_for(stats_for(3.0), UserProfile(), None).action == "stay_silent"
 
 
 def test_truth_is_silent_when_over_the_users_budget():
     truth = truth_for(stats_for(30.0, current=30000), UserProfile(max_price=25000), None)
     assert truth.is_real is True
     assert truth.fits_user is False
-    assert truth.action == "callar"
+    assert truth.action == "stay_silent"
 
 
 def test_truth_ignores_the_advertised_list_price():

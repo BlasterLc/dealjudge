@@ -20,7 +20,7 @@ A question is data, not a prompt you tune per call:
 ```python
 {"type": "choice",                       # "choice" (pick one label) or "noul" (yes/no)
  "instructions": "What level of offer is this?",
- "criteria": {"buena": "10-25 % under the median", "muy_buena": "25-40 % under the median"}}
+ "criteria": {"good": "10-25 % under the median", "very_good": "25-40 % under the median"}}
 ```
 
 `choice` answers `{"choice": label, "probabilities": {...}, "confidence": float}`;

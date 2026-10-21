@@ -13,13 +13,13 @@ from dealjudge.history import HistoryStats, PricePoint, UserProfile, compute_sta
 from dealjudge.levels import level_for
 
 SCENARIOS = (
-    "pico_inflado",
-    "baja_genuina",
-    "fluctuacion_normal",
-    "oferta_recurrente",
-    "historial_corto",
-    "limite_10",
-    "limite_25",
+    "inflated_spike",
+    "genuine_drop",
+    "normal_fluctuation",
+    "recurring_sale",
+    "short_history",
+    "edge_10",
+    "edge_25",
 )
 
 END_DAY = date(2026, 10, 20)
@@ -68,11 +68,11 @@ def truth_for(
     level = level_for(stats.real_discount_pct)
     fits_user = fits_profile(stats, profile)
     if stats.days_of_history < MIN_FULL_HISTORY:
-        action = "avisar_con_advertencia"
+        action = "alert_with_warning"
     elif is_real and fits_user:
-        action = "avisar"
+        action = "alert"
     else:
-        action = "callar"
+        action = "stay_silent"
     return Truth(is_real, level, fits_user, action)
 
 
@@ -137,19 +137,19 @@ def _limite(target_pct):
 
 
 _BUILDERS = {
-    "pico_inflado": _pico_inflado,
-    "baja_genuina": _baja_genuina,
-    "fluctuacion_normal": _fluctuacion_normal,
-    "oferta_recurrente": _oferta_recurrente,
-    "historial_corto": _historial_corto,
-    "limite_10": _limite(10.0),
-    "limite_25": _limite(25.0),
+    "inflated_spike": _pico_inflado,
+    "genuine_drop": _baja_genuina,
+    "normal_fluctuation": _fluctuacion_normal,
+    "recurring_sale": _oferta_recurrente,
+    "short_history": _historial_corto,
+    "edge_10": _limite(10.0),
+    "edge_25": _limite(25.0),
 }
 
 
 def _profile(rng: random.Random, current: int) -> UserProfile:
     max_price = None if rng.random() < 0.4 else int(round(current * rng.uniform(0.85, 1.3), -1))
-    return UserProfile(max_price=max_price, min_level=rng.choice(("marginal", "buena", "buena", "muy_buena")))
+    return UserProfile(max_price=max_price, min_level=rng.choice(("marginal", "good", "good", "very_good")))
 
 
 def generate_cases(n_per_scenario: int, seed: int) -> list[Case]:

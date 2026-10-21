@@ -12,8 +12,8 @@ class FakeJudge:
     threshold = 0.25
 
     def judge(self, state, history_days, fits_user=None):
-        action = "avisar_con_advertencia" if history_days < 14 else ("avisar" if fits_user else "callar")
-        return Judgement(0.9, "buena", 0.5, 0.9, Decision(action, 0.5, "motivo"), 5.0, False)
+        action = "alert_with_warning" if history_days < 14 else ("alert" if fits_user else "stay_silent")
+        return Judgement(0.9, "good", 0.5, 0.9, Decision(action, 0.5, "motivo"), 5.0, False)
 
 
 class NoBedrock:
@@ -31,7 +31,7 @@ def test_demo_has_six_cases_covering_the_three_behaviours(tmp_path):
     cases = build(tmp_path)["cases"]
     assert len(cases) == 6
     scenarios = {c["scenario"] for c in cases}
-    assert {"pico_inflado", "baja_genuina", "historial_corto"} <= scenarios
+    assert {"inflated_spike", "genuine_drop", "short_history"} <= scenarios
     assert set(DEMO_SCENARIOS) == scenarios
 
 

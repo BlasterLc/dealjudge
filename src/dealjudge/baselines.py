@@ -17,8 +17,8 @@ DEFAULT_LLM = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
 def cyber_watch_rule(prev_price: int, price: int, drop_pct: float = 20.0) -> str:
     if prev_price <= 0:
-        return "callar"
-    return "avisar" if price <= prev_price * (1 - drop_pct / 100) else "callar"
+        return "stay_silent"
+    return "alert" if price <= prev_price * (1 - drop_pct / 100) else "stay_silent"
 
 
 @dataclass(frozen=True)
