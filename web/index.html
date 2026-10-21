@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dealjudge</title>
+  <meta name="description" content="¿Es una oferta de verdad? Dealjudge juzga cada descuento contra 90 días de precios.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%274%27 fill=%27%23f3ebd8%27/%3E%3Crect x=%274%27 y=%2710%27 width=%2724%27 height=%2712%27 fill=%27none%27 stroke=%27%23a8231a%27 stroke-width=%273%27 transform=%27rotate(-8 16 16)%27/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <h1 class="brand">Dealjudge</h1>
+    <p class="tagline">¿Es de verdad una oferta?</p>
+    <p class="sim">Datos simulados · tiendas ficticias</p>
+  </header>
+
+  <main class="layout">
+    <nav class="roll" aria-label="Productos vigilados">
+      <h2 class="roll-title">Vigilando</h2>
+      <ul id="roll" role="list"></ul>
+    </nav>
+
+    <article class="receipt" id="receipt" aria-live="polite" tabindex="-1"></article>
+  </main>
+
+  <noscript><p class="noscript">Esta página necesita JavaScript para mostrar los veredictos.</p></noscript>
+  <script src="app.js"></script>
+</body>
+</html>

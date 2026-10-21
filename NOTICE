@@ -1,0 +1,10 @@
+Dealjudge
+Copyright 2026 the Dealjudge authors.
+
+Fonts bundled in web/fonts/ (self-hosted, SIL Open Font License 1.1, https://openfontlicense.org):
+- Barlow Condensed, Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)
+- IBM Plex Mono, Copyright 2017 IBM Corp. (https://github.com/IBM/plex)
+
+The reusable pattern in patterns/policy/ and the handler design follow the Strands InterventionHandler
+API; the idea of gating a tool call with typed Decider questions is also explored by other entries of the
+same hackathon (for example upgradedev/lachesis-guard, MIT).
