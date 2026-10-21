@@ -61,6 +61,12 @@ alert-vs-silence accuracy, real/fake and level accuracy, accuracy by scenario, l
 The confidence threshold is fixed on a development split and the numbers are reported on a separate test split
 (seed 303, never inspected while tuning).
 
+Headline (210 simulated test offers): alert-vs-silence accuracy is **0.90 for Decider + rule**, against 0.75 for
+the old `cyber-watch` rule and 0.95 for a Claude Haiku 4.5 judge on Bedrock. Decider beats the old rule but does
+**not** beat the larger LLM on raw accuracy (it is weakest on the middle offer levels and on offers right at the
+10 % line); what it adds is one local call with no API cost, no failed calls, and probabilities the code uses to
+warn instead of guess. Full tables, including calibration, are in `results/evaluation.md`.
+
 **All offers in the evaluation are simulated.** `src/dealjudge/generator.py` builds 90-day price series from seven
 scenarios (inflated spike, genuine drop, normal noise, recurring sale, short history, and cases on the 10 % and
 25 % edges), and the correct answer comes from `truth_for()` over the series' own figures. Because the truth is

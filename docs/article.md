@@ -22,9 +22,31 @@ from figures the code provides. The model is never the gate.
 
 ## What I measured
 
-[[FILL FROM results/evaluation.md after the final run: table with alert-vs-silence accuracy, real/fake and level
-accuracy, latency, cost, and calibration for Decider + rule, the old rule, and the Bedrock LLM. State that the
-offers are simulated, 7 scenarios, test seed 303, threshold fixed on a separate dev split.]]
+All numbers below are on **simulated** offers: 7 scenarios, 30 cases each, 210 test cases (seed 303). The
+confidence threshold (0.1) was fixed on a separate dev split (seed 101), never on the test cases.
+
+| Metric (test split) | Decider + rule | Old `cyber-watch` rule | Bedrock LLM (Claude Haiku 4.5) |
+|---|---|---|---|
+| Alert vs silence accuracy | 0.900 | 0.752 | 0.952 |
+| 3-way action accuracy | 0.886 | 0.629 | 0.952 |
+| Real vs fake accuracy | 0.943 | n/a | 0.981 |
+| Offer level accuracy | 0.748 | n/a | 0.948 |
+| Latency, median / p95 | 523 / 635 ms (local GPU) | ~0 | 568 / 647 ms |
+| Failed calls | 0 | 0 | 4 |
+| API cost | 0 (runs locally) | 0 | about US$0.13 for the run |
+
+What this says, without spin:
+
+- **Decider beats the old rule by 15 points** (0.900 vs 0.752) and is clearly better where the rule is blind:
+  genuine drops that have already lasted a few days (0.77 vs 0.33, because the rule only compares today with
+  yesterday), short histories and offers near the 25 % line.
+- **A larger LLM is more accurate.** Haiku 4.5 scores 0.952 and wins on level accuracy (0.948 vs 0.748). Decider
+  is weakest on the middle levels (`buena` 55 %, `muy_buena` 52 %) and ties the old rule on offers sitting right
+  on the 10 % line (0.57).
+- **What Decider adds is not raw accuracy.** It returns probabilities in one local call, with no API cost and no
+  failed calls, and the code can use them: Decider answered decisively on 84 % of offers and was right 89 % of
+  the time on those; the rest were announced with a warning instead of a guess. Calibration is imperfect (ECE
+  0.17 for real/fake, 0.37 for level), which is why the threshold is fit on data.
 
 The offers are **simulated**: a public generator builds 90-day series and the correct answer comes from the
 series' own figures. That makes the benchmark about how well a 2B model reads figures, not about real stores.
@@ -35,7 +57,7 @@ The old `cyber-watch` rule (alert on a 20 % drop from the last price) is an inde
 1. **Phrasing moved accuracy from 53 % to 94 %.** "Is this discount real?" was nearly a coin flip. "Look at the
    line *real discount vs median*: is it 10 % or more?" worked. Point the model at the figure.
 2. **Decider answered worse than chance on a two-part comparison.** "Does this fit the user?" (price against a
-   cap *and* a level against a minimum) scored 37-41 %. I moved that comparison into code, kept the model's
+   cap *and* a level against a minimum) scored 37-41 % in development and 43 % on the test split. I moved that comparison into code, kept the model's
    answer, and reported it. It matches the model card's own warning about harder tasks.
 3. **`confidence` is not a probability.** For the offer level it sat on a low scale (a correct pick at P=0.30
    reported 0.13), so a fixed 0.70 threshold made everything warn. I fit the threshold on a dev split with a rule
