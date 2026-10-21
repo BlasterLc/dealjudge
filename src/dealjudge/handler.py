@@ -16,6 +16,7 @@ from typing import Any
 
 from strands.interventions import Deny, InterventionHandler, Proceed
 
+from dealjudge import i18n
 from dealjudge.history import HistoryStats, PricePoint, UserProfile, compute_stats, fits_profile, render_state
 from dealjudge.judge import Judge, Judgement
 
@@ -59,15 +60,16 @@ class DealjudgeHandler(InterventionHandler):
             series, advertised = self._source(offer_id)
             stats: HistoryStats = compute_stats(series)
         except (KeyError, ValueError):
-            return Deny("No hay datos de esa oferta.")
-        state = render_state(product, stats, advertised, self._profile)
+            return Deny(i18n.text(self._judge.lang, "deny_no_data"))
+        lang = self._judge.lang
+        state = render_state(product, stats, advertised, self._profile, lang)
         judgement: Judgement = await asyncio.to_thread(
             self._judge.judge, state, stats.days_of_history, fits_profile(stats, self._profile)
         )
         action = judgement.decision.action
         if action == "stay_silent":
-            return Deny(judgement.decision.reason)
+            return Deny(i18n.reason_text(lang, judgement.decision.reason))
         if not self._ledger.should_notify(offer_id, stats.current, action):
-            return Deny("Ya se avisó de esta oferta al mismo precio.")
+            return Deny(i18n.text(lang, "deny_repeat"))
         self._log[offer_id] = (judgement, stats)
         return Proceed()

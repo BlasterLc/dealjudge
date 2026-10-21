@@ -3,6 +3,7 @@
 import math
 from dataclasses import dataclass
 
+from dealjudge import i18n
 from dealjudge.client import DeciderClient, DeciderUnavailable
 from dealjudge.policy import DEFAULT_THRESHOLD, Decision, decide
 from dealjudge.questions import decider_questions
@@ -26,9 +27,10 @@ class Judgement:
 
 
 class Judge:
-    def __init__(self, client: DeciderClient, threshold: float = DEFAULT_THRESHOLD) -> None:
+    def __init__(self, client: DeciderClient, threshold: float = DEFAULT_THRESHOLD, lang: str = i18n.DEFAULT_LANG) -> None:
         self._client = client
         self.threshold = threshold
+        self.lang = lang
 
     def judge(self, state: str, history_days: int, fits_user: bool | None = None) -> Judgement:
         """Never raises: a Decider that does not answer yields a warning, not a crash.
@@ -37,13 +39,14 @@ class Judge:
         the model's own answer in the decision (which is still recorded).
         """
         try:
-            result = self._client.ask(state, decider_questions())
+            result = self._client.ask(state, decider_questions(self.lang))
             answers = result.answers
-            level = str(answers["level"]["choice"])
+            key = str(answers["level"]["choice"])
+            level = i18n.level_from_key(self.lang, key) or ""  # a name Decider was not offered: decide() refuses it
             is_real_p = float(answers["is_real"]["noul"])
             level_conf = float(answers["level"]["confidence"])
             fits_p = float(answers["fits_user"]["noul"])
-            level_prob = float(answers["level"].get("probabilities", {}).get(level, 0.0))
+            level_prob = float(answers["level"].get("probabilities", {}).get(key, 0.0))
         except (DeciderUnavailable, KeyError, TypeError, ValueError, AttributeError):
             nan = math.nan
             decision = decide(nan, "", nan, nan, history_days, self.threshold)

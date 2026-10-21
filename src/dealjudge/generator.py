@@ -27,16 +27,17 @@ DAYS = 90
 MIN_FULL_HISTORY = 14
 NOISE = 0.02
 
-# (name, low, high) base price in CLP, one per product the registrar watches
+# (name, low, high) base price in CLP, one per product the registrar watches. Names are the English
+# catalogue names; i18n.product_name translates them for display.
 PRODUCTS = (
-    ("Audifonos inalambricos", 15000, 60000),
-    ("SSD 1TB", 55000, 120000),
-    ("Freidora de aire", 35000, 90000),
-    ("Aspiradora robot", 90000, 300000),
-    ("Teclado mecanico", 25000, 80000),
+    ("Wireless headphones", 15000, 60000),
+    ("1TB SSD", 55000, 120000),
+    ("Air fryer", 35000, 90000),
+    ("Robot vacuum", 90000, 300000),
+    ("Mechanical keyboard", 25000, 80000),
     ("Smartwatch", 30000, 150000),
-    ("Notebook gama media", 350000, 600000),
-    ("Zapatillas running", 40000, 110000),
+    ("Mid-range laptop", 350000, 600000),
+    ("Running shoes", 40000, 110000),
 )
 
 

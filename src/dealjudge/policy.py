@@ -20,13 +20,15 @@ ACTIONS = ("alert", "stay_silent", "alert_with_warning")
 DEFAULT_THRESHOLD = 0.70
 MIN_HISTORY_DAYS = 14
 GOOD_LEVELS = ("good", "very_good", "exceptional")
+# Why a decision was taken. Codes, not prose: i18n.reason_text turns them into words for a person.
+REASONS = ("unreadable", "unknown_level", "short_history", "low_confidence", "real_and_fits", "not_real_or_no_fit")
 
 
 @dataclass(frozen=True)
 class Decision:
     action: str
     confidence: float
-    reason: str
+    reason: str  # one of REASONS
 
 
 def _warn(reason: str, confidence: float = 0.0) -> Decision:
@@ -51,14 +53,14 @@ def decide(
     probability p has confidence max(p, 1 - p).
     """
     if not (_valid(is_real_p) and _valid(level_conf) and _valid(fits_p)):
-        return _warn("No pude leer con seguridad la respuesta del modelo.")
+        return _warn("unreadable")
     if level not in LEVELS:
-        return _warn("No pude clasificar el nivel de la oferta.")
+        return _warn("unknown_level")
     confidence = min(max(is_real_p, 1 - is_real_p), level_conf, max(fits_p, 1 - fits_p))
     if history_days < MIN_HISTORY_DAYS:
-        return _warn("Hay poco historial de precios para juzgar.", confidence)
+        return _warn("short_history", confidence)
     if confidence < threshold:
-        return _warn("No estoy seguro de este veredicto.", confidence)
+        return _warn("low_confidence", confidence)
     if is_real_p >= 0.5 and level in GOOD_LEVELS and fits_p >= 0.5:
-        return Decision("alert", confidence, "Descuento real que cumple lo que pides.")
-    return Decision("stay_silent", confidence, "No es una oferta real o no cumple lo que pides.")
+        return Decision("alert", confidence, "real_and_fits")
+    return Decision("stay_silent", confidence, "not_real_or_no_fit")

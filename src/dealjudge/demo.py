@@ -6,6 +6,7 @@ Everything here is simulated: the series come from the generator and the stores 
 import json
 import os
 
+from dealjudge import i18n
 from dealjudge.client import DeciderClient
 from dealjudge.generator import generate_cases
 from dealjudge.history import compute_stats, fits_profile, render_state
@@ -17,7 +18,8 @@ DEMO_SCENARIOS = ("inflated_spike", "inflated_spike", "genuine_drop", "genuine_d
 STORES = ("Casa Aurora", "Electro Faro", "Mercado Sur", "Bazar Cobre", "Tienda Norte", "Almacén Luna")
 
 
-def _threshold(path: str = "results/evaluation.json") -> float:
+def _threshold(lang: str) -> float:
+    path = f"results/{lang}/evaluation.json"
     try:
         with open(path) as f:
             return float(json.load(f)["meta"]["threshold"])
@@ -25,8 +27,10 @@ def _threshold(path: str = "results/evaluation.json") -> float:
         return DEFAULT_THRESHOLD
 
 
-def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None) -> None:
-    judge = judge or Judge(DeciderClient(), threshold=_threshold())
+def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None, lang: str = i18n.DEFAULT_LANG) -> None:
+    """Judge six simulated offers and write them as the page's data. ``judge.lang`` wins over ``lang``."""
+    judge = judge or Judge(DeciderClient(), threshold=_threshold(lang), lang=lang)
+    lang = judge.lang
     pool: dict[str, list] = {}
     for case in generate_cases(len(STORES) + 2, seed):
         pool.setdefault(case.scenario, []).append(case)
@@ -37,19 +41,20 @@ def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None) -> Non
         taken[scenario] = n + 1
         case = pool[scenario][(3 * i + n) % len(pool[scenario])]  # varied products across the six
         stats = compute_stats(case.series)
-        state = render_state(case.product, stats, case.advertised_list_price, case.profile)
+        product = i18n.product_name(lang, case.product)
+        state = render_state(product, stats, case.advertised_list_price, case.profile, lang)
         j = judge.judge(state, stats.days_of_history, fits_profile(stats, case.profile))
         action = j.decision.action
         notice = (
-            write_notice(j, stats, case.product, bedrock_client)
+            write_notice(j, stats, product, bedrock_client, lang)
             if action != "stay_silent"
-            else f"No se avisó. {j.decision.reason}"
+            else i18n.text(lang, "not_alerted", reason=i18n.reason_text(lang, j.decision.reason))
         )
         cases.append(
             {
                 "id": case.id,
                 "scenario": scenario,
-                "product": case.product,
+                "product": product,
                 "store_label": STORES[i],
                 "series": [{"day": p.day.isoformat(), "price": p.price} for p in case.series],
                 "baseline_median": stats.baseline_median,
@@ -66,11 +71,12 @@ def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None) -> Non
                     "action": action,
                     "level": j.level,
                     "confidence": round(j.decision.confidence, 2),
-                    "reason": j.decision.reason,
+                    "reason": i18n.reason_text(lang, j.decision.reason),
+                    "reason_code": j.decision.reason,
                 },
                 "notice": notice,
             }
         )
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w") as f:
-        json.dump({"simulated": True, "seed": seed, "threshold": getattr(judge, "threshold", None), "cases": cases}, f, ensure_ascii=False, indent=2)
+        json.dump({"simulated": True, "lang": lang, "seed": seed, "threshold": getattr(judge, "threshold", None), "cases": cases}, f, ensure_ascii=False, indent=2)

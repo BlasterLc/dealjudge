@@ -1,12 +1,14 @@
 """Live check against a running Decider server: prints the raw answers and the latency.
 
-Usage: python scripts/smoke_decider.py
+Usage: python scripts/smoke_decider.py [--lang en|es]
 """
 
+import argparse
 import json
 import time
 from datetime import date, timedelta
 
+from dealjudge import i18n
 from dealjudge.client import DeciderClient
 from dealjudge.history import PricePoint, UserProfile, compute_stats, render_state
 from dealjudge.questions import decider_questions
@@ -20,15 +22,19 @@ def series(prices):
 
 
 CASES = {
-    "descuento real de 20 %": ([40000] * 85 + [32000], None),
-    "pico inflado y vuelta al precio de siempre": ([29990] * 60 + [39990] * 12 + [29990], 39990),
+    "a real 20% discount": ([40000] * 85 + [32000], None),
+    "an inflated spike and back to the usual price": ([29990] * 60 + [39990] * 12 + [29990], 39990),
 }
 
+ap = argparse.ArgumentParser()
+ap.add_argument("--lang", choices=i18n.LANGS, default=i18n.DEFAULT_LANG)
+lang = ap.parse_args().lang
 client = DeciderClient()
 for name, (prices, advertised) in CASES.items():
-    state = render_state("Audifonos Aura X2", compute_stats(series(prices)), advertised, UserProfile(max_price=35000))
+    state = render_state(i18n.product_name(lang, "Wireless headphones"), compute_stats(series(prices)), advertised,
+                         UserProfile(max_price=35000), lang)
     t0 = time.perf_counter()
-    result = client.ask(state, decider_questions())
+    result = client.ask(state, decider_questions(lang))
     wall = (time.perf_counter() - t0) * 1000
-    print(f"== {name}  (reloj {wall:.0f} ms, servidor {result.latency_ms} ms)")
+    print(f"== {name}  (wall {wall:.0f} ms, server {result.latency_ms} ms)")
     print(json.dumps(result.answers, indent=2, ensure_ascii=False))

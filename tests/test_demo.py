@@ -11,19 +11,22 @@ KEYS = {"id", "product", "store_label", "series", "baseline_median", "current", 
 class FakeJudge:
     threshold = 0.25
 
+    def __init__(self, lang="en"):
+        self.lang = lang
+
     def judge(self, state, history_days, fits_user=None):
         action = "alert_with_warning" if history_days < 14 else ("alert" if fits_user else "stay_silent")
-        return Judgement(0.9, "good", 0.5, 0.9, Decision(action, 0.5, "motivo"), 5.0, False)
+        return Judgement(0.9, "good", 0.5, 0.9, Decision(action, 0.5, "short_history"), 5.0, False)
 
 
 class NoBedrock:
     def converse(self, **kwargs):
-        raise RuntimeError("sin AWS")
+        raise RuntimeError("no AWS")
 
 
-def build(tmp_path):
-    out = tmp_path / "demo.json"
-    build_demo(7, str(out), judge=FakeJudge(), bedrock_client=NoBedrock())
+def build(tmp_path, lang="en"):
+    out = tmp_path / f"demo.{lang}.json"
+    build_demo(7, str(out), judge=FakeJudge(lang), bedrock_client=NoBedrock())
     return json.loads(out.read_text())
 
 
@@ -50,3 +53,16 @@ def test_store_labels_are_fictional_and_the_file_says_it_is_simulated(tmp_path):
     assert data["threshold"] == 0.25
     labels = {c["store_label"] for c in data["cases"]}
     assert labels and not labels & {"Falabella", "Paris", "Sodimac", "Lider", "Amazon", "Ripley"}
+
+
+def test_each_language_gets_its_own_product_names_reasons_and_notices(tmp_path):
+    en, es = build(tmp_path, "en"), build(tmp_path, "es")
+    assert en["lang"] == "en" and es["lang"] == "es"
+    silent_en = next(c for c in en["cases"] if c["verdict"]["action"] == "stay_silent")
+    silent_es = next(c for c in es["cases"] if c["verdict"]["action"] == "stay_silent")
+    assert silent_en["notice"].startswith("No alert sent.")
+    assert silent_es["notice"].startswith("No se avisó.")
+    assert silent_en["verdict"]["reason"] == "There is little price history to judge."
+    assert silent_es["verdict"]["reason"] == "Hay poco historial de precios para juzgar."
+    assert silent_en["verdict"]["reason_code"] == silent_es["verdict"]["reason_code"] == "short_history"
+    assert {c["product"] for c in es["cases"]} != {c["product"] for c in en["cases"]}

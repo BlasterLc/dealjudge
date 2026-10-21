@@ -2,37 +2,25 @@
 
 from typing import Any
 
-LEVEL_CRITERIA = {
-    "no_deal": "el precio actual está menos de 5 % bajo la mediana de 90 días",
-    "marginal": "el precio actual está entre 5 % y 10 % bajo la mediana de 90 días",
-    "good": "el precio actual está entre 10 % y 25 % bajo la mediana de 90 días",
-    "very_good": "el precio actual está entre 25 % y 40 % bajo la mediana de 90 días",
-    "exceptional": "el precio actual está 40 % o más bajo la mediana de 90 días",
-}
+from dealjudge import i18n
 
 
-def decider_questions() -> dict[str, dict[str, Any]]:
+def decider_questions(lang: str = i18n.DEFAULT_LANG) -> dict[str, dict[str, Any]]:
+    t = lambda name: i18n.text(lang, name)  # noqa: E731
     return {
         "is_real": {
             "type": "noul",
-            "instructions": "Mira la línea 'descuento real contra la mediana'. ¿Es de 10 % o más?",
-            "criteria": {
-                "true": "esa línea marca 10 % o más",
-                "false": "esa línea marca menos de 10 %",
-            },
+            "instructions": t("q_is_real"),
+            "criteria": {"true": t("q_is_real_true"), "false": t("q_is_real_false")},
         },
         "level": {
             "type": "choice",
-            "instructions": "¿Qué nivel de oferta es, según el descuento real contra la mediana?",
-            "criteria": dict(LEVEL_CRITERIA),
+            "instructions": t("q_level"),
+            "criteria": i18n.level_criteria(lang),
         },
         "fits_user": {
             "type": "noul",
-            "instructions": "¿Esta oferta cumple lo que pide el usuario? Debe estar dentro de su "
-            "tope de precio, si lo tiene, y alcanzar el nivel mínimo que pide.",
-            "criteria": {
-                "true": "el precio está dentro del tope y el nivel alcanza el mínimo pedido",
-                "false": "el precio supera el tope o el nivel no alcanza el mínimo pedido",
-            },
+            "instructions": t("q_fits"),
+            "criteria": {"true": t("q_fits_true"), "false": t("q_fits_false")},
         },
     }

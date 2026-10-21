@@ -61,3 +61,18 @@ def test_code_computed_fit_overrides_the_models_answer():
     assert j.effective_fits_p == 1.0
     assert j.decision.action == "alert"
     assert Judge(FakeClient(GOOD)).judge("estado", 90, fits_user=False).decision.action == "stay_silent"
+
+
+def test_spanish_judge_asks_in_spanish_and_maps_the_level_back_to_the_canonical_one():
+    answers = {**GOOD, "level": {"type": "choice", "choice": "buena", "probabilities": {"buena": 0.8}, "confidence": 0.9}}
+    client = FakeClient(answers)
+    j = Judge(client, lang="es").judge("estado", 90)
+    assert j.level == "good" and j.level_prob == 0.8
+    sent = client.calls[0][1]
+    assert tuple(sent["level"]["criteria"]) == ("sin_oferta", "marginal", "buena", "muy_buena", "excepcional")
+
+
+def test_a_level_in_the_wrong_language_is_not_classified():
+    j = Judge(FakeClient(GOOD), lang="es").judge("estado", 90)  # "good" is not a Spanish level name
+    assert j.decision.action == "alert_with_warning"
+    assert j.decision.reason == "unknown_level"

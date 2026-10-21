@@ -52,3 +52,23 @@ def test_llm_judge_marks_an_unknown_level_as_failed():
 
 def test_llm_judge_marks_a_client_error_as_failed():
     assert LlmJudge(client=FakeBedrock(error=RuntimeError("throttled"))).judge("estado").failed is True
+
+
+def test_llm_judge_in_spanish_prompts_in_spanish_and_maps_the_level_back():
+    client = FakeBedrock(json.dumps({"is_real": True, "level": "muy_buena", "fits_user": True}))
+    j = LlmJudge(client=client, lang="es").judge("estado")
+    assert j.level == "very_good" and j.failed is False
+    prompt = client.calls[0]["messages"][0]["content"][0]["text"]
+    assert "Preguntas" in prompt and "muy_buena" in prompt and "very_good" not in prompt
+
+
+def test_llm_judge_in_english_never_mentions_the_spanish_level_names():
+    client = FakeBedrock(VALID)
+    LlmJudge(client=client).judge("state")
+    prompt = client.calls[0]["messages"][0]["content"][0]["text"]
+    assert "Questions" in prompt and "very_good" in prompt and "muy_buena" not in prompt
+
+
+def test_a_level_name_from_the_other_language_is_a_failure():
+    text = json.dumps({"is_real": True, "level": "buena", "fits_user": True})
+    assert LlmJudge(client=FakeBedrock(text)).judge("estado").failed is True

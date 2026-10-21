@@ -1,46 +1,33 @@
 """The text of an alert. Bedrock writes it, but only from figures the code hands over."""
 
+from dealjudge import i18n
 from dealjudge.history import HistoryStats
 from dealjudge.judge import Judgement
 
 NOTICE_MODEL = "amazon.nova-lite-v1:0"
 
-_PROMPT = """Escribe un aviso de oferta de 2 o 3 frases en español, claro y sin exagerar.
-Usa SOLO estas cifras, sin inventar otras:
-- producto: {product}
-- precio actual: {price}
-- mediana de 90 días: {median}
-- descuento real contra la mediana: {pct} %
-- precio mínimo: {minimum}
-{warning}
-Responde solo con el texto del aviso."""
 
-
-def _clp(n: int) -> str:
-    return "$" + format(int(n), ",").replace(",", ".")
-
-
-def template_notice(judgement: Judgement, stats: HistoryStats, product: str) -> str:
-    text = (
-        f"{product}: ahora {_clp(stats.current)}, {stats.real_discount_pct:.0f} % bajo la mediana de "
-        f"90 días ({_clp(stats.baseline_median)}). Mínimo registrado: {_clp(stats.min_price)}."
+def template_notice(judgement: Judgement, stats: HistoryStats, product: str, lang: str = i18n.DEFAULT_LANG) -> str:
+    text = i18n.text(
+        lang, "notice_template",
+        product=product, price=i18n.money(lang, stats.current), pct=f"{stats.real_discount_pct:.0f}",
+        median=i18n.money(lang, stats.baseline_median), minimum=i18n.money(lang, stats.min_price),
     )
     if judgement.decision.action == "alert_with_warning":
-        text += f" Ten cautela: {judgement.decision.reason}"
+        text += i18n.text(lang, "notice_caution", reason=i18n.reason_text(lang, judgement.decision.reason))
     return text
 
 
-def write_notice(judgement: Judgement, stats: HistoryStats, product: str, bedrock_client=None) -> str:
+def write_notice(
+    judgement: Judgement, stats: HistoryStats, product: str, bedrock_client=None, lang: str = i18n.DEFAULT_LANG
+) -> str:
     warning = ""
     if judgement.decision.action == "alert_with_warning":
-        warning = f"- incluye una advertencia clara: {judgement.decision.reason}"
-    prompt = _PROMPT.format(
-        product=product,
-        price=_clp(stats.current),
-        median=_clp(stats.baseline_median),
-        pct=f"{stats.real_discount_pct:.0f}",
-        minimum=_clp(stats.min_price),
-        warning=warning,
+        warning = i18n.text(lang, "notice_warning", reason=i18n.reason_text(lang, judgement.decision.reason))
+    prompt = i18n.text(
+        lang, "notice_prompt",
+        product=product, price=i18n.money(lang, stats.current), median=i18n.money(lang, stats.baseline_median),
+        pct=f"{stats.real_discount_pct:.0f}", minimum=i18n.money(lang, stats.min_price), warning=warning,
     )
     try:
         if bedrock_client is None:
@@ -57,4 +44,4 @@ def write_notice(judgement: Judgement, stats: HistoryStats, product: str, bedroc
             return text
     except Exception:  # an alert must still go out if Bedrock is down
         pass
-    return template_notice(judgement, stats, product)
+    return template_notice(judgement, stats, product, lang)

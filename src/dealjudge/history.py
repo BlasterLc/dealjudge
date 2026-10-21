@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import date
 from statistics import median
 
+from dealjudge.i18n import DEFAULT_LANG, level_key, money, text
 from dealjudge.levels import LEVELS, level_for
 
 SPIKE_FACTOR = 1.15
@@ -91,38 +92,29 @@ def fits_profile(stats: HistoryStats, profile: UserProfile) -> bool:
     return within_budget and LEVELS.index(level_for(stats.real_discount_pct)) >= LEVELS.index(profile.min_level)
 
 
-def _clp(n: int) -> str:
-    return "$" + format(int(n), ",").replace(",", ".")
-
-
 def render_state(
     product: str,
     stats: HistoryStats,
     advertised_list_price: int | None,
     profile: UserProfile,
+    lang: str = DEFAULT_LANG,
 ) -> str:
-    """The text Decider reads: one figure per line, in Spanish."""
+    """The text Decider reads: one figure per line, all in ``lang``."""
+    t = lambda name, **f: text(lang, name, **f)  # noqa: E731
+    m = lambda amount: money(lang, amount)  # noqa: E731
+    since_drop = t("state_no_drops") if stats.days_since_last_drop is None else stats.days_since_last_drop
     lines = [
-        f"Producto: {product}",
-        f"- precio actual: {_clp(stats.current)}",
-        f"- mediana de 90 días: {_clp(stats.baseline_median)}",
-        f"- descuento real contra la mediana: {stats.real_discount_pct:.1f} %",
-        f"- precio mínimo: {_clp(stats.min_price)}",
-        f"- días de historial: {stats.days_of_history}",
+        t("state_product", product=product),
+        t("state_current", value=m(stats.current)),
+        t("state_median", value=m(stats.baseline_median)),
+        t("state_real_discount", pct=f"{stats.real_discount_pct:.1f}"),
+        t("state_min", value=m(stats.min_price)),
+        t("state_days", value=stats.days_of_history),
+        t("state_since_drop", value=since_drop),
+        t("state_spike_yes", value=m(stats.spike_peak)) if stats.spike_recent else t("state_spike_no"),
     ]
-    if stats.days_since_last_drop is None:
-        lines.append("- días desde la última baja: no hubo bajas")
-    else:
-        lines.append(f"- días desde la última baja: {stats.days_since_last_drop}")
-    if stats.spike_recent:
-        lines.append(f"- pico reciente de precio: sí, hasta {_clp(stats.spike_peak)}")
-    else:
-        lines.append("- pico reciente de precio: no")
     if advertised_list_price:
-        lines.append(f"- precio de lista anunciado por la tienda: {_clp(advertised_list_price)}")
-    if profile.max_price is None:
-        lines.append("- tope del usuario: sin tope")
-    else:
-        lines.append(f"- tope del usuario: {_clp(profile.max_price)}")
-    lines.append(f"- nivel mínimo que pide el usuario: {profile.min_level}")
+        lines.append(t("state_list_price", value=m(advertised_list_price)))
+    lines.append(t("state_cap", value=t("state_no_cap") if profile.max_price is None else m(profile.max_price)))
+    lines.append(t("state_min_level", value=level_key(lang, profile.min_level)))
     return "\n".join(lines)

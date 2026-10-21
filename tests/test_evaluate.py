@@ -120,11 +120,14 @@ def test_knasta_reference_is_none_when_fields_are_missing_or_invalid():
 
 
 class FakeJudge:
+    lang = "en"
+
     def __init__(self):
-        self.fits_seen = []
+        self.fits_seen, self.states = [], []
 
     def judge(self, state, history_days, fits_user=None):
         self.fits_seen.append(fits_user)
+        self.states.append(state)
         return Judgement(0.9, "good", 0.9, 0.9, decide(0.9, "good", 0.9, 0.9, history_days), 7.0, False)
 
 
@@ -148,3 +151,11 @@ def test_run_evaluation_writes_a_complete_report(tmp_path):
     assert report["failures"] == {"decider": 0, "llm": 0}
     assert json.loads((tmp_path / "evaluation.json").read_text())["meta"]["threshold"] == report["meta"]["threshold"]
     assert "simulated" in (tmp_path / "evaluation.md").read_text().lower()
+
+
+def test_the_evaluation_runs_in_the_judges_language_and_records_it(tmp_path):
+    judge = FakeJudge()
+    judge.lang = "es"
+    report = run_evaluation(1, 2, 1, judge, FakeLlm(), str(tmp_path))
+    assert report["meta"]["lang"] == "es"
+    assert all("precio actual" in s and "current price" not in s for s in judge.states)

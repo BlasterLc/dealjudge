@@ -15,22 +15,24 @@ SERIES = [PricePoint(END - timedelta(days=len(PRICES) - 1 - i), p) for i, p in e
 
 
 class FakeJudge:
+    lang = "en"
+
     def __init__(self, action):
         self.action, self.calls = action, []
 
     def judge(self, state, history_days, fits_user=None):
         self.calls.append((state, history_days, fits_user))
-        return Judgement(0.9, "good", 0.9, 0.9, Decision(self.action, 0.9, "motivo"), 5.0, False)
+        return Judgement(0.9, "good", 0.9, 0.9, Decision(self.action, 0.9, "not_real_or_no_fit"), 5.0, False)
 
 
 def source(offer_id):
-    if offer_id == "desconocida":
+    if offer_id == "unknown":
         raise KeyError(offer_id)
     return SERIES, None
 
 
 def event(name="send_alert", **tool_input):
-    tool_input = tool_input or {"offer_id": "o1", "product": "Audifonos Aura X2", "price": 32000}
+    tool_input = tool_input or {"offer_id": "o1", "product": "Aura X2 headphones", "price": 32000}
     return SimpleNamespace(tool_use={"name": name, "input": tool_input, "toolUseId": "t1"}, agent=SimpleNamespace(messages=[]))
 
 
@@ -72,18 +74,34 @@ def test_same_offer_at_the_same_price_is_not_announced_twice():
 def test_a_new_price_for_the_same_offer_is_announced_again():
     handler, _, _ = make("alert")
     assert isinstance(run(handler, event()), Proceed)
-    changed = event(offer_id="o1", product="Audifonos Aura X2", price=30000)
+    changed = event(offer_id="o1", product="Aura X2 headphones", price=30000)
     handler._source = lambda offer_id: (SERIES[:-1] + [PricePoint(END, 30000)], None)
     assert isinstance(run(handler, changed), Proceed)
 
 
 def test_other_tools_pass_through_without_asking_the_judge():
     handler, judge, _ = make("stay_silent")
-    assert isinstance(run(handler, event(name="otra_herramienta", x=1)), Proceed)
+    assert isinstance(run(handler, event(name="other_tool", x=1)), Proceed)
     assert judge.calls == []
 
 
 def test_unknown_offer_is_denied_without_crashing():
     handler, judge, _ = make("alert")
-    assert isinstance(run(handler, event(offer_id="desconocida", product="x", price=1)), Deny)
+    assert isinstance(run(handler, event(offer_id="unknown", product="x", price=1)), Deny)
     assert judge.calls == []
+
+
+def test_denial_reasons_are_written_in_the_judges_language():
+    handler, judge, _ = make("stay_silent")
+    assert run(handler, event()).reason == "It is not a real deal or it does not meet what you ask."
+    assert run(handler, event(offer_id="unknown", product="x", price=1)).reason == "There is no data for that offer."
+    judge.lang = "es"
+    assert run(handler, event()).reason == "No es una oferta real o no cumple lo que pides."
+
+
+def test_the_repeat_denial_is_written_in_the_judges_language():
+    handler, judge, _ = make("alert")
+    run(handler, event())
+    assert run(handler, event()).reason == "This offer was already announced at the same price."
+    judge.lang = "es"
+    assert run(handler, event()).reason == "Ya se avisó de esta oferta al mismo precio."

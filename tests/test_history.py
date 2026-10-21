@@ -55,10 +55,10 @@ def test_zero_price_does_not_divide_by_zero():
 
 def test_render_state_has_the_figures_and_no_none():
     stats = compute_stats(make_series([40000] * 85 + [32000]))
-    text = render_state("Audifonos Aura X2", stats, None, UserProfile(max_price=35000))
-    assert "precio actual" in text
-    assert "mediana" in text
-    assert "tope" in text
+    text = render_state("Aura X2 headphones", stats, None, UserProfile(max_price=35000))
+    assert "current price: CLP 32,000" in text
+    assert "90-day median: CLP 40,000" in text
+    assert "price cap: CLP 35,000" in text
     assert "None" not in text
 
 

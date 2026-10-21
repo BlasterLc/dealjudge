@@ -60,7 +60,7 @@ def describe_real(db_path: str, judge, limit: int = 40) -> dict:
         if not series or reference is None:
             continue
         stats = compute_stats(series)
-        j = judge.judge(render_state(title, stats, None, UserProfile()), stats.days_of_history)
+        j = judge.judge(render_state(title, stats, None, UserProfile(), judge.lang), stats.days_of_history)
         out.append(
             {
                 "product": product,
