@@ -1,7 +1,0 @@
-pyproject.toml
-src/dealjudge/__init__.py
-src/dealjudge.egg-info/PKG-INFO
-src/dealjudge.egg-info/SOURCES.txt
-src/dealjudge.egg-info/dependency_links.txt
-src/dealjudge.egg-info/requires.txt
-src/dealjudge.egg-info/top_level.txt
