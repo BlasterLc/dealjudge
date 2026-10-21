@@ -1,0 +1,1 @@
+# sin dependencias externas; el archivo hace que Railway detecte Python
