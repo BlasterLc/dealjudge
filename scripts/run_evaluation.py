@@ -22,7 +22,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=30, help="cases per scenario, per split")
     ap.add_argument("--dev-seed", type=int, default=101)
-    ap.add_argument("--test-seed", type=int, default=202)
+    ap.add_argument("--test-seed", type=int, default=303)  # 101/202 were used while tuning the wording
     ap.add_argument("--out", default="results")
     ap.add_argument("--real-db", help="SQLite from the price registrar, for the Knasta comparison")
     args = ap.parse_args()

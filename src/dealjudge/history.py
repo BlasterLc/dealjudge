@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from datetime import date
 from statistics import median
 
+from dealjudge.levels import LEVELS, level_for
+
 SPIKE_FACTOR = 1.15
 RECENT_DAYS = 30
 WINDOW_DAYS = 90
@@ -77,6 +79,16 @@ def compute_stats(series: Sequence[PricePoint]) -> HistoryStats:
         spike_peak=peak if spike else None,
         real_discount_pct=discount,
     )
+
+
+def fits_profile(stats: HistoryStats, profile: UserProfile) -> bool:
+    """Whether the offer is within the user's budget and reaches their minimum level.
+
+    Computed in code, not by Decider: comparing a price with a cap and a level with a
+    minimum is arithmetic, and the model answers it worse than chance (see the evaluation).
+    """
+    within_budget = profile.max_price is None or stats.current <= profile.max_price
+    return within_budget and LEVELS.index(level_for(stats.real_discount_pct)) >= LEVELS.index(profile.min_level)
 
 
 def _clp(n: int) -> str:

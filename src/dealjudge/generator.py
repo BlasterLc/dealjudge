@@ -9,8 +9,8 @@ import random
 from dataclasses import dataclass
 from datetime import date, timedelta
 
-from dealjudge.history import HistoryStats, PricePoint, UserProfile, compute_stats
-from dealjudge.levels import LEVELS, level_for
+from dealjudge.history import HistoryStats, PricePoint, UserProfile, compute_stats, fits_profile
+from dealjudge.levels import level_for
 
 SCENARIOS = (
     "pico_inflado",
@@ -66,8 +66,7 @@ def truth_for(
     a store's claimed discount says nothing about whether the discount is real."""
     is_real = stats.real_discount_pct >= 10.0
     level = level_for(stats.real_discount_pct)
-    within_budget = profile.max_price is None or stats.current <= profile.max_price
-    fits_user = within_budget and LEVELS.index(level) >= LEVELS.index(profile.min_level)
+    fits_user = fits_profile(stats, profile)
     if stats.days_of_history < MIN_FULL_HISTORY:
         action = "avisar_con_advertencia"
     elif is_real and fits_user:

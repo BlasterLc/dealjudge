@@ -15,11 +15,10 @@ def decider_questions() -> dict[str, dict[str, Any]]:
     return {
         "is_real": {
             "type": "noul",
-            "instructions": "¿Es real este descuento? Un descuento es real si el precio actual "
-            "está al menos 10 % bajo la mediana de los 90 días anteriores a cualquier subida reciente.",
+            "instructions": "Mira la línea 'descuento real contra la mediana'. ¿Es de 10 % o más?",
             "criteria": {
-                "true": "el precio actual está al menos 10 % bajo esa mediana",
-                "false": "no lo está, o el precio estuvo inflado poco antes de la oferta",
+                "true": "esa línea marca 10 % o más",
+                "false": "esa línea marca menos de 10 %",
             },
         },
         "level": {

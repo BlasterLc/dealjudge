@@ -52,3 +52,12 @@ def test_non_numeric_confidence_warns():
     j = Judge(FakeClient(answers)).judge("estado", 90)
     assert j.failed is True
     assert j.decision.action == "avisar_con_advertencia"
+
+
+def test_code_computed_fit_overrides_the_models_answer():
+    wrong_fit = {**GOOD, "fits_user": {"type": "noul", "noul": 0.1}}
+    j = Judge(FakeClient(wrong_fit)).judge("estado", 90, fits_user=True)
+    assert j.fits_p == 0.1  # the model's own answer is still recorded
+    assert j.effective_fits_p == 1.0
+    assert j.decision.action == "avisar"
+    assert Judge(FakeClient(GOOD)).judge("estado", 90, fits_user=False).decision.action == "callar"

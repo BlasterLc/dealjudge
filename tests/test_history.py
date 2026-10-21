@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 import pytest
 
-from dealjudge.history import PricePoint, UserProfile, compute_stats, render_state
+from dealjudge.history import PricePoint, UserProfile, compute_stats, fits_profile, render_state
 
 END = date(2026, 10, 20)
 
@@ -60,3 +60,11 @@ def test_render_state_has_the_figures_and_no_none():
     assert "mediana" in text
     assert "tope" in text
     assert "None" not in text
+
+
+def test_fits_profile_checks_budget_and_minimum_level():
+    stats = compute_stats(make_series([40000] * 85 + [32000]))  # 20 % below the median: "buena"
+    assert fits_profile(stats, UserProfile()) is True
+    assert fits_profile(stats, UserProfile(max_price=35000, min_level="buena")) is True
+    assert fits_profile(stats, UserProfile(max_price=30000)) is False
+    assert fits_profile(stats, UserProfile(min_level="muy_buena")) is False

@@ -49,6 +49,14 @@ def test_calibrate_threshold_picks_the_only_optimal_candidate():
     assert calibrate_threshold(dev) == 0.8
 
 
+def test_calibrate_threshold_warns_where_a_decisive_answer_is_a_coin_flip():
+    """Group A (conf 0.3): the decisive answer is right 4 of 10 times, so warning is worth more.
+    Group B (conf 0.6): always right, so it must stay decisive. Plain accuracy would pick <= 0.3."""
+    alert, silent = Truth(True, "buena", True, "avisar"), Truth(False, "sin_oferta", False, "callar")
+    dev = [(judgement(0.3), alert, 90)] * 4 + [(judgement(0.3), silent, 90)] * 6 + [(judgement(0.6), alert, 90)] * 10
+    assert calibrate_threshold(dev) == 0.6
+
+
 def test_llm_action_mapping():
     good = LlmJudgement(True, "buena", True, 0, 0, 0.0, False)
     assert llm_action(good, 90) == "avisar"
@@ -112,7 +120,11 @@ def test_knasta_reference_is_none_when_fields_are_missing_or_invalid():
 
 
 class FakeJudge:
-    def judge(self, state, history_days):
+    def __init__(self):
+        self.fits_seen = []
+
+    def judge(self, state, history_days, fits_user=None):
+        self.fits_seen.append(fits_user)
         return Judgement(0.9, "buena", 0.9, 0.9, decide(0.9, "buena", 0.9, 0.9, history_days), 7.0, False)
 
 
@@ -122,9 +134,12 @@ class FakeLlm:
 
 
 def test_run_evaluation_writes_a_complete_report(tmp_path):
-    report = run_evaluation(1, 2, 2, FakeJudge(), FakeLlm(), str(tmp_path))
+    judge = FakeJudge()
+    report = run_evaluation(1, 2, 2, judge, FakeLlm(), str(tmp_path))
+    assert judge.fits_seen and all(isinstance(f, bool) for f in judge.fits_seen)
+    assert set(report["fits_user_accuracy"]) == {"decider_model"}
     for key in ("alert_accuracy", "action_accuracy", "is_real_accuracy", "level_accuracy", "by_scenario",
-                "latency_ms", "cost", "calibration", "failures", "meta"):
+                "latency_ms", "cost", "calibration", "failures", "meta", "decider_warnings"):
         assert key in report
     assert set(report["alert_accuracy"]) == {"decider", "rule", "llm"}
     assert all(0.0 <= v <= 1.0 for v in report["alert_accuracy"].values())
