@@ -39,6 +39,21 @@ The model is never the gate: Decider measures, `decide` decides.
 **One language per run.** Everything the model reads and the user sees (state text, questions, notices, reasons)
 comes from `src/dealjudge/i18n.py`, in English (default) or Spanish (`--lang es`). Internal identifiers are always English.
 
+## Where it runs
+
+- **The agent** (the Strands agent, the policy hook and the `send_alert` tool) is a Python process. In this
+  submission it runs on my laptop; it needs Python and network access to Amazon Bedrock, nothing else.
+- **Amazon Bedrock (AWS)** is the generative part: the agent's own model and the alert text are Amazon Nova Lite in
+  `us-east-1`, and the LLM baseline in the evaluation is a larger model on Bedrock.
+- **Decider 2B** is served locally with `strands-decider serve` on a laptop GPU (about 4 GiB of video memory; about
+  12 s per call on CPU). It is an open adapter, so it can be served anywhere. A SageMaker endpoint is the obvious AWS
+  home and I looked at it, but the endpoint quotas in the account I used were 0 and a quota increase has no guaranteed
+  turnaround, so it is **not built**.
+- **The price recorder** (`snapshot.py`) is a separate small service I ran on Railway, not on AWS. The page is static.
+
+So Dealjudge is not a hosted AWS service in this submission: it is an agent whose generative part runs on Bedrock and
+whose decision runs on Decider right next to it.
+
 ## Run it
 
 ```bash

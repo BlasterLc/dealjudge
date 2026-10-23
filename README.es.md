@@ -40,6 +40,22 @@ El modelo nunca es la compuerta: Decider mide, `decide` decide.
 motivos) sale de `src/dealjudge/i18n.py`, en inglés (por defecto) o en español (`--lang es`). Los identificadores
 internos siempre están en inglés.
 
+## Dónde se ejecuta
+
+- **El agente** (el agente de Strands, el hook de política y la herramienta `send_alert`) es un proceso de Python. En
+  esta entrega corre en mi portátil; necesita Python y red hacia Amazon Bedrock, nada más.
+- **Amazon Bedrock (AWS)** es la parte generativa: el modelo del propio agente y el texto del aviso son Amazon Nova
+  Lite en `us-east-1`, y la línea base del LLM en la evaluación es un modelo más grande en Bedrock.
+- **Decider 2B** se sirve en local con `strands-decider serve` en la GPU del portátil (unos 4 GiB de memoria de vídeo;
+  unos 12 s por llamada en CPU). Es un adaptador abierto, así que puede servirse en cualquier parte. Un endpoint de
+  SageMaker sería el hogar natural en AWS y lo evalué, pero las cuotas de endpoint en la cuenta que usé eran 0 y un
+  aumento de cuota no tiene plazo garantizado, así que **no está construido**.
+- **El registrador de precios** (`snapshot.py`) es un servicio pequeño aparte que corrí en Railway, no en AWS. La
+  página es estática.
+
+Así que Dealjudge no es un servicio alojado en AWS en esta entrega: es un agente cuya parte generativa corre en
+Bedrock y cuya decisión corre en Decider, justo al lado.
+
 ## Cómo ejecutarlo
 
 ```bash

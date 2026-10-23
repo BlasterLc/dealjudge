@@ -136,6 +136,16 @@ que advierte en vez de adivinar y el patrón publicado como un archivo reutiliza
 situación como texto y tu propio `decide(answers)`; traduce el resultado a `Proceed`, `Deny` o `Guide`, y falla
 cerrado si el servidor no responde. El cableado y las lecciones están en su README (inglés y español).
 
+## Dónde se ejecuta
+
+El agente (Strands, el hook de política y la herramienta `send_alert`) es un proceso de Python que corre en mi
+portátil. **Amazon Bedrock** es la parte generativa: el modelo del propio agente y el texto del aviso son Amazon Nova
+Lite, y la línea base del LLM es un modelo más grande de Bedrock. **Decider 2B** corre junto al agente en la GPU del
+portátil (`strands-decider serve`, unos 4 GiB de memoria de vídeo). Miré un endpoint de SageMaker y no lo construí:
+las cuotas de endpoint de mi cuenta eran 0. Así que es un agente que usa Bedrock para lo que escribe y Decider para
+lo que decide, no un servicio alojado en AWS; el registrador de precios es un servicio pequeño aparte que corrí fuera
+de AWS.
+
 ## Límites
 
 Benchmark simulado; los precios reales no tienen verdad de referencia (el estado propio de Knasta se guarda solo

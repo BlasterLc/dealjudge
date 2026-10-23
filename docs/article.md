@@ -131,6 +131,15 @@ user's own cap and minimum, a policy that warns instead of guessing, and the pat
 as text, and your own `decide(answers)`; it maps the result to `Proceed`, `Deny` or `Guide`, and fails closed if
 the server does not answer. Wiring and lessons are in its README (English and Spanish).
 
+## Where it runs
+
+The agent (Strands, the policy hook, the `send_alert` tool) is a Python process that runs on my laptop. **Amazon
+Bedrock** is the generative part: the agent's own model and the alert text are Amazon Nova Lite, and the LLM baseline
+is a larger Bedrock model. **Decider 2B** runs next to the agent on a laptop GPU (`strands-decider serve`, about 4 GiB
+of video memory). I looked at a SageMaker endpoint and did not build it: the endpoint quotas in my account were 0.
+So this is an agent that uses Bedrock for what it writes and Decider for what it decides, not a hosted AWS service;
+the price recorder is a separate small service that I ran outside AWS.
+
 ## Limits
 
 Simulated benchmark; real prices have no ground truth (Knasta's own state is stored only as a reference);
