@@ -159,5 +159,9 @@ tiempo. Hacer scraping de sitios de retail es una zona gris: revisa los término
 
 ## Licencia
 
-Apache-2.0. Tanto el checkpoint de Decider como su modelo base, Qwen3.5-2B-Base, son Apache-2.0 según sus fichas
-de modelo. Las fuentes incluidas están bajo la SIL Open Font License (ver `NOTICE`).
+Apache-2.0. El checkpoint de Decider (un adaptador LoRA y una cabeza de lectura) y su modelo base, Qwen3.5-2B-Base,
+son ambos Apache-2.0: revisé el archivo `LICENSE` de cada repositorio de Hugging Face el 2026-10-23, no solo la
+etiqueta de la ficha. Este repositorio no redistribuye los pesos. El `LICENSE.md` de Decider indica que se entrenó
+con datasets públicos de licencias mixtas y pide leer los términos de cada fuente antes de redistribuir datos
+construidos con ellas. Las fuentes incluidas (Inter, Plus Jakarta Sans, Geist Mono) están bajo la SIL Open Font
+License, con sus textos en `web/fonts/` y sus atribuciones en `NOTICE`.

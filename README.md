@@ -155,5 +155,9 @@ time. Scraping retail sites sits in a grey zone: check each store's terms before
 
 ## License
 
-Apache-2.0. Both the Decider checkpoint and its base model, Qwen3.5-2B-Base, are Apache-2.0 according to their
-model cards. Bundled fonts are under the SIL Open Font License (see `NOTICE`).
+Apache-2.0. The Decider checkpoint (a LoRA adapter and readout head) and its base model, Qwen3.5-2B-Base, are both
+Apache-2.0: I checked the `LICENSE` file in each Hugging Face repository on 2026-10-23, not only the model-card tag.
+This repository does not redistribute the weights. Decider's own `LICENSE.md` notes that it was trained on public
+datasets with mixed licenses and tells you to read each source's terms before redistributing data built from them.
+Bundled fonts (Inter, Plus Jakarta Sans, Geist Mono) are under the SIL Open Font License, with their texts in
+`web/fonts/` and attributions in `NOTICE`.

@@ -1,9 +1,21 @@
 Dealjudge
 Copyright 2026 the Dealjudge authors.
 
-Fonts bundled in web/fonts/ (self-hosted, SIL Open Font License 1.1, https://openfontlicense.org):
-- Barlow Condensed, Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)
-- IBM Plex Mono, Copyright 2017 IBM Corp. (https://github.com/IBM/plex)
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Fonts bundled in web/fonts/ (SIL Open Font License 1.1, https://openfontlicense.org; the license text of each
+family sits next to its files, as OFL-<family>.txt):
+- Inter, Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter)
+- Plus Jakarta Sans, Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)
+- Geist Mono, Copyright (c) 2023 Vercel, in collaboration with basement.studio (https://github.com/vercel/geist-font)
+
+Models and software used, not redistributed in this repository:
+- Strands Decider 2B (StrandsAgents/strands-decider-2B-hobson-v19), Apache-2.0: a LoRA adapter and a readout head
+  trained on Qwen/Qwen3.5-2B-Base (Apache-2.0). Its model card and LICENSE.md list the public datasets it was trained
+  on and say to read each source's own terms before redistributing data built from them.
+- strands-decider (strands-labs/strands-decider) and strands-agents (strands-agents/sdk-python), both Apache-2.0.
+- Amazon Bedrock models (Anthropic Claude Haiku 4.5 for the LLM baseline and the alert text, Amazon Nova) are used
+  through the AWS service and follow AWS's and each provider's terms.
 
 The reusable pattern in patterns/policy/ and the handler design follow the Strands InterventionHandler
 API; the idea of gating a tool call with typed Decider questions is also explored by other entries of the
