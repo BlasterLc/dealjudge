@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "lang": "en",
+    "seed": 101,
+    "cases": 70,
+    "warmup_calls": 3,
+    "llm_model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "llm_price_usd_per_mtok": {
+      "input": 1.0,
+      "output": 5.0
+    },
+    "decider_checkpoint": "StrandsAgents/strands-decider-2B-hobson-v19",
+    "decider_host": "local GPU (laptop RTX 4050)",
+    "note": "sequential calls on simulated states, Decider and LLM in separate phases; the LLM is called from this machine over the internet with retries off (failed = throttled or errored)",
+    "price_note": "LLM price is the public list price used by the evaluation; verify before quoting."
+  },
+  "decider": {
+    "wall_clock": {
+      "n": 70,
+      "median_ms": 277.9,
+      "mean_ms": 285.9,
+      "p95_ms": 336.2,
+      "max_ms": 362.3
+    },
+    "server_reported": {
+      "n": 70,
+      "median_ms": 275.7,
+      "mean_ms": 283.4,
+      "p95_ms": 333.7,
+      "max_ms": 359.1
+    },
+    "failed": 0,
+    "api_cost_usd_per_1000": 0.0
+  },
+  "llm": {
+    "wall_clock": {
+      "n": 18,
+      "median_ms": 940.3,
+      "mean_ms": 1278.9,
+      "p95_ms": 2493.7,
+      "max_ms": 2493.7
+    },
+    "bedrock_reported": {
+      "n": 18,
+      "median_ms": 574.0,
+      "mean_ms": 575.3,
+      "p95_ms": 789.0,
+      "max_ms": 789.0
+    },
+    "failed": 52,
+    "failed_rate": 0.743,
+    "avg_input_tokens": 383,
+    "avg_output_tokens": 29,
+    "cost_usd_per_1000": 0.5307
+  }
+}

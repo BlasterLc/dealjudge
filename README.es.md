@@ -85,10 +85,22 @@ nivel de oferta** (0,79 contra 0,92). Lo que aporta es una llamada local sin cos
 adivinar: respondió con decisión en el 86 % (EN) / 83 % (ES) de las ofertas y acertó el 93 % / 91 % de las veces
 en esas.
 
-**La latencia se reporta con una salvedad.** Las corridas de evaluación midieron una mediana de 484 ms (EN) y
-744 ms (ES) para Decider, contra 574 / 584 ms del LLM. Las dos cifras de Decider difieren para el mismo modelo,
-así que sirven como orden de magnitud. Aislada, la misma llamada de tres preguntas midió unos 300 ms en ambos
-idiomas (30 llamadas cada uno).
+**Latencia y costo, medidos por separado** (`scripts/bench_latency_cost.py`, inglés, 70 estados simulados de la
+semilla de desarrollo, llamadas secuenciales, Decider y el LLM en fases separadas; resultados en `results/bench/en/`):
+
+| | Decider 2B (RTX 4050 de portátil, local) | Claude Haiku 4.5 (Bedrock, desde la misma máquina) |
+|---|---|---|
+| Latencia mediana | **278 ms** (p95 336 ms) | 940 ms (574 ms según Bedrock) |
+| Llamadas fallidas | 0 de 70 | 52 de 70 (límite de tasa, sin reintentos) |
+| Costo de API por 1.000 decisiones | 0 | US$ 0,53 (383 tokens de entrada, 29 de salida) |
+
+No es el mismo montaje: una GPU local junto al script contra una API remota a la que se llega por internet desde
+Chile, así que la diferencia es en parte del modelo y en parte de la red. El p95 del LLM no es fiable (18 llamadas
+exitosas). La cuota de Bedrock de esta cuenta limitó la tasa de casi todas las llamadas secuenciales, y probablemente
+por eso el LLM falló 8 y 6 veces en la evaluación. Las líneas de latencia de la propia evaluación (484 ms EN, 744 ms
+ES para Decider) intercalan llamadas a Decider y al LLM; en mis pruebas eso inflaba a Decider (545 ms intercalado
+contra 278 ms en fases separadas), probablemente porque la GPU del portátil baja su reloj mientras espera las
+llamadas lentas al LLM. Cita el benchmark, no esas líneas. Solo se midió en inglés.
 
 **En inglés lee mejor.** Con las mismas ofertas, Decider puntuó más alto en inglés que en español (real/falso 1,00
 contra 0,95, nivel 0,79 contra 0,74, aviso 0,943 contra 0,919). La misma dirección apareció en la semilla de

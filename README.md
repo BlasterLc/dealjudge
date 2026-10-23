@@ -83,9 +83,22 @@ offer level** (0.79 vs 0.92). What it adds is one local call with no API cost, n
 6 times, counted as warnings) and probabilities the code uses to warn instead of guess: it answered decisively on
 86 % (EN) / 83 % (ES) of offers and was right 93 % / 91 % of the time on those.
 
-**Latency is reported with a caveat.** The evaluation runs measured a median of 484 ms (EN) and 744 ms (ES) for
-Decider, against 574 / 584 ms for the LLM. The two Decider figures differ for the same model, so treat them as an
-order of magnitude. Isolated, the same three-question call measured about 300 ms in both languages (30 calls each).
+**Latency and cost, measured on their own** (`scripts/bench_latency_cost.py`, English, 70 simulated states from the
+development seed, sequential calls, Decider and the LLM in separate phases; results in `results/bench/en/`):
+
+| | Decider 2B (laptop RTX 4050, local) | Claude Haiku 4.5 (Bedrock, from the same machine) |
+|---|---|---|
+| Median latency | **278 ms** (p95 336 ms) | 940 ms (574 ms as reported by Bedrock) |
+| Failed calls | 0 of 70 | 52 of 70 (rate limited, retries off) |
+| API cost per 1,000 decisions | 0 | US$0.53 (383 tokens in, 29 out each) |
+
+These are not the same setup: a local GPU next to the script against a remote API reached over the internet from
+Chile, so the gap is part model, part network. The LLM's p95 is not reliable (18 successful calls). This account's
+Bedrock quota rate-limited most sequential calls, which is probably why the LLM failed 8 and 6 times in the
+evaluation. The evaluation's own latency lines (484 ms EN, 744 ms ES for Decider) interleave Decider and LLM calls;
+in my tests that inflated Decider (545 ms interleaved against 278 ms in separate phases), probably because the laptop
+GPU lowers its clock while it waits for the slow LLM calls. Quote the benchmark, not those lines. Only English was
+benchmarked.
 
 **English reads better.** On the same offers Decider scored higher in English than in Spanish (real/fake 1.00 vs
 0.95, level 0.79 vs 0.74, alert 0.943 vs 0.919). The same direction appeared on the development seed. The LLM baseline

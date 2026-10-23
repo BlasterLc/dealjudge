@@ -57,10 +57,14 @@ What this says, without spin:
 - **Calibration is imperfect.** For real/fake the expected calibration error is 0.13 (EN) and 0.17 (ES), mostly
   because the model is under-confident (right 100 % of the time at a mean confidence of about 0.87 in English). For the
   offer level it is 0.37 and 0.35, which is why the threshold is fit on data.
-- **Latency: same order as the LLM, not faster.** The evaluation runs measured a median of 484 ms (EN) and 744 ms
-  (ES) for Decider and 574 / 584 ms for Haiku. The two Decider figures differ for the same model, so I do not claim
-  a speed advantage. Measured alone, the same three-question call took about 300 ms in both languages (30 calls
-  each, laptop RTX 4050).
+- **Latency and cost: measured separately, with caveats.** A dedicated benchmark (70 simulated states, sequential
+  calls, Decider and the LLM in separate phases, English only) gave Decider a median of 278 ms (p95 336 ms, 0 failures)
+  on a laptop RTX 4050 next to the script, and Haiku 4.5 on Bedrock 940 ms measured from the same machine (574 ms
+  as Bedrock reports it) at about US$0.53 per 1,000 decisions, against no API cost for Decider. It is not the same
+  setup (local GPU against a remote API, called from Chile), so the gap is part model and part network. Bedrock also
+  rate-limited 52 of 70 sequential calls on this account (retries off), probably why the LLM "failed" 8 and 6 times
+  in the evaluation. The evaluation's own latency lines (484 ms EN, 744 ms ES) interleave the two models' calls,
+  which inflated Decider in my tests (545 ms against 278 ms), so I quote the benchmark instead.
 
 The offers are **simulated**: a public generator builds 90-day series and the correct answer comes from the
 series' own figures. That makes the benchmark about how well a 2B model reads figures, not about real stores.
