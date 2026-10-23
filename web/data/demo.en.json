@@ -388,7 +388,16 @@
         "reason": "It is not a real deal or it does not meet what you ask.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No alert sent. It is not a real deal or it does not meet what you ask."
+      "notice": "No alert sent. It is not a real deal or it does not meet what you ask.",
+      "decider": {
+        "is_real_p": 0.095,
+        "level_conf": 0.331,
+        "level_prob": 0.465,
+        "fits_p": 0.618,
+        "fits_used": 0.0,
+        "latency_ms": null,
+        "failed": false
+      }
     },
     {
       "id": "inflated_spike-004",
@@ -774,7 +783,16 @@
         "reason": "It is not a real deal or it does not meet what you ask.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No alert sent. It is not a real deal or it does not meet what you ask."
+      "notice": "No alert sent. It is not a real deal or it does not meet what you ask.",
+      "decider": {
+        "is_real_p": 0.121,
+        "level_conf": 0.366,
+        "level_prob": 0.493,
+        "fits_p": 0.631,
+        "fits_used": 0.0,
+        "latency_ms": null,
+        "failed": false
+      }
     },
     {
       "id": "genuine_drop-006",
@@ -1160,7 +1178,16 @@
         "reason": "Real discount that meets what you ask.",
         "reason_code": "real_and_fits"
       },
-      "notice": "Take advantage of this mid-range laptop now priced at CLP 217,600, a 42% discount from the 90-day median of CLP 373,420. This is also the lowest price recorded."
+      "notice": "Take advantage of this mid-range laptop now priced at CLP 217,600, a 42% discount from the 90-day median of CLP 373,420. This is also the lowest price recorded.",
+      "decider": {
+        "is_real_p": 0.768,
+        "level_conf": 0.268,
+        "level_prob": 0.414,
+        "fits_p": 0.382,
+        "fits_used": 1.0,
+        "latency_ms": null,
+        "failed": false
+      }
     },
     {
       "id": "genuine_drop-002",
@@ -1546,7 +1573,16 @@
         "reason": "Real discount that meets what you ask.",
         "reason_code": "real_and_fits"
       },
-      "notice": "The Air fryer is currently priced at CLP 45,320, which is 35% below the 90-day median of CLP 70,195. This is also just CLP 10 more than the lowest recorded price."
+      "notice": "The Air fryer is currently priced at CLP 45,320, which is 35% below the 90-day median of CLP 70,195. This is also just CLP 10 more than the lowest recorded price.",
+      "decider": {
+        "is_real_p": 0.772,
+        "level_conf": 0.322,
+        "level_prob": 0.457,
+        "fits_p": 0.837,
+        "fits_used": 1.0,
+        "latency_ms": null,
+        "failed": false
+      }
     },
     {
       "id": "short_history-004",
@@ -1588,7 +1624,16 @@
         "reason": "There is little price history to judge.",
         "reason_code": "short_history"
       },
-      "notice": "The Mechanical keyboard is currently priced at CLP 40,020, which is 34% below the 90-day median of CLP 60,185. This is also the lowest price recorded. However, there is little price history to judge."
+      "notice": "The Mechanical keyboard is currently priced at CLP 40,020, which is 34% below the 90-day median of CLP 60,185. This is also the lowest price recorded. However, there is little price history to judge.",
+      "decider": {
+        "is_real_p": 0.784,
+        "level_conf": 0.335,
+        "level_prob": 0.468,
+        "fits_p": 0.825,
+        "fits_used": 1.0,
+        "latency_ms": null,
+        "failed": false
+      }
     },
     {
       "id": "normal_fluctuation-007",
@@ -1974,7 +2019,16 @@
         "reason": "It is not a real deal or it does not meet what you ask.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No alert sent. It is not a real deal or it does not meet what you ask."
+      "notice": "No alert sent. It is not a real deal or it does not meet what you ask.",
+      "decider": {
+        "is_real_p": 0.096,
+        "level_conf": 0.275,
+        "level_prob": 0.42,
+        "fits_p": 0.714,
+        "fits_used": 0.0,
+        "latency_ms": null,
+        "failed": false
+      }
     }
   ]
 }

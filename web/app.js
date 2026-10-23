@@ -4,7 +4,6 @@
 // "agent" that reads a typed product is a small simulated catalog (see CATALOG in i18n.js).
 
 const STORE_KEY = "dealjudge.v1";
-const WIDE = window.matchMedia("(min-width: 960px)");
 const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const app = {
@@ -108,8 +107,11 @@ function render({ focus = false } = {}) {
     current = list.find((i) => i.id === r.id);
     if (!current) view = "list";
   }
-  if (view === "list" && WIDE.matches) { current = list[0]; view = current ? "detail" : "list"; }
-  document.body.dataset.view = view === "detail" && r.view === "list" ? "list" : view;
+  if (view === "list") {
+    current = list.find((i) => i.c) ?? list[0];  // home: a judged offer, so the first thing seen is a verdict
+    view = current ? "detail" : "list";
+  }
+  document.body.dataset.view = view;
 
   renderList(list, current && view === "detail" ? current.id : null);
   const pane = document.getElementById("pane-main");
@@ -122,10 +124,8 @@ function render({ focus = false } = {}) {
   if (view === "add") document.getElementById("add-q")?.focus({ preventScroll: true });
 
   if (focus && !firstRender) {
-    if (r.view !== "list" || !WIDE.matches) {
-      window.scrollTo({ top: 0, behavior: "auto" });
-      if (view !== "add") pane.focus({ preventScroll: true });
-    }
+    window.scrollTo({ top: 0, behavior: "auto" });
+    if (view !== "add") pane.focus({ preventScroll: true });
   }
   firstRender = false;
 }
@@ -175,16 +175,17 @@ async function ensureData() {
 
 /* ---------- list ---------- */
 
-function renderList(list, selectedId) {
+// Wide screens: the list sits at the left. Narrow ones: it sits below the verdict.
+function renderList(list, currentId) {
   const t = T();
   const pane = document.getElementById("pane-list");
   pane.replaceChildren(
     h("div", { class: "list-head" },
       h("div", null,
-        h("h1", { class: "list-title", id: "list-title", text: t.myProducts }),
+        h("h2", { class: "list-title", id: "list-title", text: t.myProducts }),
         h("p", { class: "list-count", text: t.watchedCount(list.length) })),
-      h("a", { class: "btn btn-primary", href: "#/add" }, icon("plus", 18), t.add)),
-    h("ul", { class: "items", role: "list" }, list.map((it) => h("li", null, itemLink(it, it.id === selectedId)))));
+      h("a", { class: "btn btn-ghost", href: "#/add" }, icon("plus", 18), t.add)),
+    h("ul", { class: "items", role: "list" }, list.map((it) => h("li", null, itemLink(it, it.id === currentId)))));
 }
 
 function itemLink(it, selected) {
@@ -211,9 +212,8 @@ function detailView(it) {
 function watchingView(it) {
   const t = T();
   return h("article", null,
-    backLink(),
     h("header", { class: "d-head" }, photo(it.photo, 72),
-      h("div", null, h("h2", { class: "d-title", text: it.name }), h("p", { class: "d-meta", text: it.store }))),
+      h("div", null, h("h1", { class: "d-title", text: it.name }), h("p", { class: "d-meta", text: it.store }))),
     h("div", { class: "verdict" },
       statusPill("watching", true),
       h("p", { class: "verdict-fact", text: t.watchingFact(money(it.price)) }),
@@ -230,44 +230,86 @@ function verdictView(it) {
   const fact = d.kind === "below" ? t.factBelow(money(c.current), d.pct, money(c.baseline_median))
     : d.kind === "above" ? t.factAbove(money(c.current), d.pct, money(c.baseline_median))
     : t.factAt(money(c.current), money(c.baseline_median));
-  const thr = app.data[app.lang].threshold;
   const warnFn = t.warnBody[v.reason_code] || t.warnBody._;
 
   return h("article", null,
-    backLink(),
     h("header", { class: "d-head" }, photo(it.photo, 72),
-      h("div", null, h("h2", { class: "d-title", text: it.name }), h("p", { class: "d-meta", text: t.storeMeta(c.store_label, s.days_of_history) }))),
+      h("div", null, h("h1", { class: "d-title", text: it.name }), h("p", { class: "d-meta", text: t.storeMeta(c.store_label, s.days_of_history) }))),
 
-    h("div", { class: "verdict" },
-      statusPill(v.action, true),
+    h("div", { class: `verdict ${statusOf(v.action).cls}` },
+      h("p", { class: "verdict-action" }, icon(statusOf(v.action).icon, 26), t.action[v.action]),
       h("p", { class: "verdict-fact", text: fact }),
       s.spike_peak ? h("p", { class: "verdict-spike", text: t.factSpike(money(s.spike_peak), c.advertised_list_price ? money(c.advertised_list_price) : null) }) : null,
-      h("p", { class: "verdict-reason" }, h("b", { text: t.why + ": " }), v.reason),
       v.action === "alert_with_warning"
         ? h("div", { class: "warn", role: "note" }, icon("warn", 22),
             h("div", null, h("h3", { text: t.warnTitle }), h("p", { text: warnFn(s.days_of_history) })))
         : null),
 
-    h("section", { class: "sec" },
-      h("h3", { text: t.chartHeading(c.series.length) }),
-      h("figure", { class: "chart" },
-        h("div", { class: "chart-box", "data-case": c.id }),
-        h("figcaption", { text: t.chartCaption }))),
-
-    h("section", { class: "sec" },
-      h("h3", { text: t.figures }),
-      factsList(c)),
+    deciderView(c),
 
     v.action !== "stay_silent"
-      ? h("section", { class: "sec" }, h("h3", { text: t.noticeAlert }), h("p", { class: "notice", text: c.notice }))
+      ? h("section", { class: "sec" }, h("h2", { text: t.noticeAlert }), h("p", { class: "notice", text: c.notice }))
       : null,
 
     h("section", { class: "sec" },
-      h("h3", { text: t.confHeading }),
-      confScale(v.confidence, thr),
-      h("p", { class: "conf-body", text: t.confBody(dec(v.confidence), dec(thr), v.reason_code) })),
+      h("h2", { text: t.figures }),
+      factsList(c),
+      h("details", { class: "fold" },
+        h("summary", null, icon("chart", 18), t.chartToggle(c.series.length)),
+        h("figure", { class: "chart" },
+          h("div", { class: "chart-box", "data-case": c.id }),
+          h("figcaption", { text: t.chartCaption })))),
 
     h("p", { class: "fine" }, t.fine, " ", h("span", { class: "mono", text: c.id })));
+}
+
+/* ---------- how Decider decided: the three typed answers, then the code rule ---------- */
+
+function meter(value, label, thr) {
+  const at = (x) => `${Math.round(Math.min(Math.max(x, 0), 1) * 100)}%`;
+  return h("span", { class: "meter", role: "img", "aria-label": `${label}, ${T().thrTick} ${dec(thr)}` },
+    h("i", { style: `width:${at(value)}` }), h("u", { style: `left:${at(thr)}`, title: `${T().thrTick} ${dec(thr)}` }));
+}
+
+function deciderView(c) {
+  const t = T(), v = c.verdict, m = c.decider;
+  const thr = app.data[app.lang].threshold;
+  if (!m || m.failed) {
+    return h("section", { class: "sec decider" }, h("h2", { text: t.deciderHeading }),
+      h("p", { class: "decider-lead", text: m?.failed ? t.deciderFailed : t.deciderLead(dec(thr)) }));
+  }
+  const yn = (p) => (p >= 0.5 ? t.yes : t.no);
+  const sure = (p) => Math.max(p, 1 - p);
+  const realSure = sure(m.is_real_p);
+  const row = (q, answer, conf, note, key) =>
+    h("li", { class: "q", "data-q": key },
+      h("span", { class: "q-text", text: q }),
+      h("b", { class: "q-answer", text: answer }),
+      conf == null
+        ? h("span", { class: "q-code", text: t.byCode })
+        : h("span", { class: "q-conf" }, meter(conf, `${t.sure} ${dec(conf)}`, thr), h("span", { class: "q-num", text: `${t.sure} ${dec(conf)}` })),
+      note ? h("span", { class: "q-note", text: note }) : null);
+
+  const fitsByCode = m.fits_used != null;
+  const rows = [
+    row(t.qReal, yn(m.is_real_p), realSure, null, "is_real"),
+    row(t.qLevel, t.level[v.level] ?? v.level, m.level_conf, null, "level"),
+    fitsByCode
+      ? row(t.qFits, m.fits_used >= 0.5 ? t.yes : t.no, null, t.modelSaid(yn(m.fits_p), dec(sure(m.fits_p))), "fits")
+      : row(t.qFits, yn(m.fits_p), sure(m.fits_p), null, "fits"),
+  ];
+
+  return h("section", { class: "sec decider", "aria-labelledby": "decider-h" },
+    h("p", { class: "eyebrow", text: t.deciderEyebrow }),
+    h("h2", { id: "decider-h", text: t.deciderHeading }),
+    h("p", { class: "decider-lead", text: t.deciderLead(dec(thr)) }),
+    h("ol", { class: "qs" }, rows),
+    h("div", { class: "rule" },
+      h("h3", { text: t.ruleHeading }),
+      confScale(v.confidence, thr),
+      h("p", { class: "rule-out" }, statusPill(v.action), h("span", { text: " " + v.reason })),
+      h("p", { class: "conf-body", text: t.confBody(dec(v.confidence), dec(thr), v.reason_code) })),
+    m.latency_ms != null ? h("p", { class: "latency", text: t.latency(m.latency_ms) }) : null);
 }
 
 function factsList(c) {
@@ -438,7 +480,7 @@ function addView() {
     h("div", { class: "chips" }, h("span", { class: "chips-label", text: t.addTry }), suggestionChips()));
   return h("article", null,
     backLink(),
-    h("h2", { class: "d-title", text: t.addTitle }),
+    h("h1", { class: "d-title", text: t.addTitle }),
     h("p", { class: "add-lead", text: t.addLead }),
     form,
     h("div", { class: "agent", id: "agent", "aria-live": "polite" }, agentBlock()),
@@ -537,7 +579,6 @@ async function boot() {
   if (!(await ensureData())) return;
   render();
   window.addEventListener("hashchange", () => render({ focus: true }));
-  WIDE.addEventListener("change", () => render());
 }
 
 boot();

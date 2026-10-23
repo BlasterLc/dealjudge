@@ -4,6 +4,7 @@ Everything here is simulated: the series come from the generator and the stores 
 """
 
 import json
+import math
 import os
 
 from dealjudge import i18n
@@ -25,6 +26,11 @@ def _threshold(lang: str) -> float:
             return float(json.load(f)["meta"]["threshold"])
     except (OSError, KeyError, ValueError):
         return DEFAULT_THRESHOLD
+
+
+def _num(x: float) -> float | None:
+    """A number for the page, or null when Decider gave none (NaN is not valid JSON)."""
+    return None if math.isnan(x) else round(x, 3)
 
 
 def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None, lang: str = i18n.DEFAULT_LANG) -> None:
@@ -73,6 +79,15 @@ def build_demo(seed: int, out_path: str, judge=None, bedrock_client=None, lang: 
                     "confidence": round(j.decision.confidence, 2),
                     "reason": i18n.reason_text(lang, j.decision.reason),
                     "reason_code": j.decision.reason,
+                },
+                "decider": {
+                    "is_real_p": _num(j.is_real_p),
+                    "level_conf": _num(j.level_conf),
+                    "level_prob": _num(j.level_prob),
+                    "fits_p": _num(j.fits_p),
+                    "fits_used": j.fits_used,
+                    "latency_ms": None if j.latency_ms is None else round(j.latency_ms),
+                    "failed": j.failed,
                 },
                 "notice": notice,
             }

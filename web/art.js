@@ -17,6 +17,7 @@ const ICONS = {
   trash: '<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 12.5h9l1-12.5"/>',
   chevron: '<path d="m9 5 7 7-7 7"/>',
   spinner: '<path d="M12 3a9 9 0 1 0 9 9"/>',
+  chart: '<path d="M4 19.5h16M4 4.5v15"/><path d="m7 15 3.5-4.5 3 2.5L19 6.5"/>',
 };
 
 const ART = {

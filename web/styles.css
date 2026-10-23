@@ -71,8 +71,8 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r1); }
 [hidden] { display: none !important; }
 
-h1, h2, h3, p, dl, dd, ul { margin: 0; padding: 0; }
-ul { list-style: none; }
+h1, h2, h3, p, dl, dd, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
 
 .skip { position: absolute; left: var(--s4); top: -64px; z-index: 30; padding: var(--s2) var(--s4); background: var(--ink); color: #fff; border-radius: var(--r2); text-decoration: none; }
 .skip:focus { top: var(--s2); }
@@ -97,23 +97,23 @@ ul { list-style: none; }
 .sim { max-width: 1200px; margin: 0 auto; padding: var(--s2) var(--s4) 0; color: var(--ink-3); font-size: 0.8125rem; display: flex; align-items: center; gap: var(--s2); }
 .sim::before { content: ""; width: 8px; height: 8px; flex: none; border: 1.5px dashed var(--ink-3); border-radius: 50%; }
 
-/* ---------- shell: one pane at a time on a phone, two on a desk ---------- */
-.shell { max-width: 1200px; margin: 0 auto; padding: var(--s4) var(--s4) var(--s16); outline: none; }
+/* ---------- shell: the verdict leads. List at the left on a desk, below it on a phone ---------- */
+.shell { max-width: 760px; margin: 0 auto; padding: var(--s4) var(--s4) var(--s16); outline: none; }
 .pane-list, .pane-main { min-width: 0; outline: none; }
-body[data-view="list"] .pane-main { display: none; }
-body:not([data-view="list"]) .pane-list { display: none; }
+.pane-list { margin-top: var(--s12); padding-top: var(--s8); border-top: 1px solid var(--line); }
+body[data-view="add"] .pane-list { display: none; }
 
 @media (min-width: 960px) {
   .tagline { display: block; }
-  .shell { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: var(--s8); align-items: start; padding-top: var(--s6); }
-  body[data-view] .pane-list, body[data-view] .pane-main { display: block; }
-  .pane-list { position: sticky; top: calc(var(--bar-h) + var(--s6)); max-height: calc(100vh - var(--bar-h) - var(--s12)); overflow-y: auto; padding-right: 2px; }
-  .back { display: none !important; }
+  .shell { max-width: 1200px; display: grid; grid-template-columns: 340px minmax(0, 760px); gap: var(--s10); align-items: start; padding-top: var(--s8); }
+  .pane-list { grid-column: 1; grid-row: 1; margin-top: 0; padding-top: 0; border-top: 0; position: sticky; top: calc(var(--bar-h) + var(--s6)); max-height: calc(100vh - var(--bar-h) - var(--s12)); overflow-y: auto; }
+  .pane-main { grid-column: 2; grid-row: 1; }
+  body[data-view="add"] .pane-list { display: block; }
 }
 
 /* ---------- list ---------- */
 .list-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s4); }
-.list-title { white-space: nowrap; font: 700 1.5rem/1.2 var(--display); letter-spacing: -0.02em; }
+.list-title { font: 700 1.25rem/1.2 var(--display); letter-spacing: -0.02em; }
 .list-count { color: var(--ink-3); font-size: 0.8125rem; margin-top: var(--s1); }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); min-height: 44px; padding: 0 var(--s4); border: 1px solid transparent; border-radius: var(--r2); font: 600 0.9375rem/1 var(--sans); text-decoration: none; white-space: nowrap; transition: background var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out), transform 120ms var(--ease-out); }
@@ -156,8 +156,15 @@ body:not([data-view="list"]) .pane-list { display: none; }
 .d-meta { color: var(--ink-3); font-size: 0.875rem; margin-top: var(--s1); }
 
 .verdict { padding: var(--s5); border: 1px solid var(--line); border-radius: var(--r4); background: var(--surface); }
-.verdict-fact { font: 600 clamp(1.125rem, 3.6vw, 1.375rem)/1.35 var(--display); margin: var(--s3) 0 0; text-wrap: pretty; }
-.verdict-spike { color: var(--ink-2); margin-top: var(--s2); max-width: 62ch; }
+.verdict.st-alert { background: var(--ok-soft); border-color: var(--ok-line); }
+.verdict.st-warn { background: var(--warn-soft); border-color: var(--warn-line); }
+.verdict.st-silent { background: var(--quiet-soft); border-color: var(--quiet-line); }
+.verdict-action { display: flex; align-items: center; gap: var(--s3); font: 800 clamp(1.5rem, 5.5vw, 1.875rem)/1.1 var(--display); letter-spacing: -0.03em; }
+.verdict.st-alert .verdict-action { color: var(--ok); }
+.verdict.st-warn .verdict-action { color: var(--warn); }
+.verdict.st-silent .verdict-action { color: var(--ink); }
+.verdict-fact { font: 600 clamp(1.0625rem, 3.6vw, 1.25rem)/1.35 var(--display); margin: var(--s3) 0 0; color: var(--ink); text-wrap: pretty; }
+.verdict-spike { color: var(--ink-2); margin-top: var(--s3); max-width: 62ch; font-size: 1rem; }
 .verdict-reason { margin-top: var(--s4); padding-top: var(--s4); border-top: 1px solid var(--line); color: var(--ink-2); }
 .verdict-reason b { color: var(--ink); font-weight: 600; }
 
@@ -166,7 +173,7 @@ body:not([data-view="list"]) .pane-list { display: none; }
 .warn p { color: #5b3410; margin-top: var(--s1); max-width: 62ch; }
 
 .sec { margin-top: var(--s8); }
-.sec h3 { font: 700 1.0625rem/1.3 var(--display); margin-bottom: var(--s3); }
+.sec h2, .sec h3 { font: 700 1.0625rem/1.3 var(--display); margin-bottom: var(--s3); }
 
 .chart { margin: 0; }
 .chart-box { position: relative; border: 1px solid var(--line); border-radius: var(--r3); padding: var(--s2) var(--s2) 0; background: var(--surface); touch-action: pan-y; }
@@ -277,3 +284,32 @@ body:not([data-view="list"]) .pane-list { display: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
   .agent-status .icon { animation: none; }
 }
+
+/* ---------- how Decider decided: the model is the point, so it gets the weight ---------- */
+.decider { padding: var(--s5); border: 1px solid var(--ink); border-radius: var(--r4); background: var(--surface); }
+.eyebrow { font: 500 0.75rem/1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: var(--s2); }
+.decider h2 { font: 700 1.25rem/1.25 var(--display); letter-spacing: -0.02em; margin-bottom: var(--s2); }
+.decider-lead { color: var(--ink-2); max-width: 62ch; }
+
+.qs { margin-top: var(--s5); border-top: 1px solid var(--line); counter-reset: q; }
+.q { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s4); row-gap: var(--s1); align-items: center; padding: var(--s3) 0; border-bottom: 1px solid var(--line); }
+.q-text { color: var(--ink-2); }
+.q-answer { font: 700 1rem/1.3 var(--display); text-align: right; }
+.q-conf { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--s3); }
+.q-num { font: 500 0.75rem/1 var(--mono); color: var(--ink-3); white-space: nowrap; }
+.q-code, .q-note { grid-column: 1 / -1; color: var(--ink-3); font-size: 0.8125rem; }
+.meter { position: relative; flex: 1; height: 6px; border-radius: var(--pill); background: var(--line); }
+.meter i { display: block; height: 100%; border-radius: var(--pill); background: var(--ink); }
+.meter u { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--accent); border-radius: 1px; text-decoration: none; }
+
+.rule { margin-top: var(--s5); }
+.rule h3 { font: 700 0.8125rem/1.3 var(--sans); color: var(--ink-3); letter-spacing: 0.01em; margin-bottom: var(--s2); }
+.rule-out { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin-top: var(--s3); font-weight: 600; }
+.latency { margin-top: var(--s3); color: var(--ink-3); font: 400 0.75rem/1.4 var(--mono); }
+
+/* ---------- the chart is evidence, so it folds away ---------- */
+.fold { margin-top: var(--s5); }
+.fold summary { display: inline-flex; align-items: center; gap: var(--s2); min-height: 44px; padding: 0 var(--s4); border: 1px solid var(--line-strong); border-radius: var(--r2); font-weight: 600; cursor: pointer; list-style: none; transition: background var(--dur) var(--ease-out); }
+.fold summary::-webkit-details-marker { display: none; }
+.fold summary:hover { background: var(--subtle); }
+.fold[open] summary { margin-bottom: var(--s4); }

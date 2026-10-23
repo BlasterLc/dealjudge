@@ -47,6 +47,13 @@ def test_every_case_has_the_contract_keys_and_integer_prices(tmp_path):
         assert c["notice"]
 
 
+def test_every_case_records_what_decider_answered(tmp_path):
+    for c in build(tmp_path)["cases"]:
+        d = c["decider"]
+        assert d["is_real_p"] == 0.9 and d["level_conf"] == 0.5 and d["fits_p"] == 0.9
+        assert d["latency_ms"] == 5 and d["failed"] is False
+
+
 def test_store_labels_are_fictional_and_the_file_says_it_is_simulated(tmp_path):
     data = build(tmp_path)
     assert data["simulated"] is True
