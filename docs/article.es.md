@@ -23,6 +23,8 @@ visible** (`alert_with_warning`). Un `InterventionHandler` de Strands aplica eso
 `send_alert`, y Amazon Bedrock redacta el aviso a partir de cifras que entrega el código. El modelo nunca es la
 compuerta.
 
+![Cómo decide Dealjudge: el código calcula el historial, Decider responde tres preguntas tipadas, una regla en Python elige avisar, avisar con advertencia o callar, y Bedrock solo redacta el aviso](docs/img/how-it-works.es.png)
+
 Todo lo que lee el modelo y ve el usuario existe en inglés y en español, un idioma por ejecución.
 
 ## Qué medí

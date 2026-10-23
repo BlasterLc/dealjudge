@@ -22,6 +22,8 @@ Then **plain Python decides** (`policy.py`): a confident real discount that fits
 warning** (`alert_with_warning`). A Strands `InterventionHandler` applies that before the `send_alert` tool runs,
 and Amazon Bedrock writes the alert text from figures the code provides. The model is never the gate.
 
+![How Dealjudge decides: code computes the history, Decider answers three typed questions, a plain-Python confidence rule picks alert, alert with warning or stay silent, and Bedrock only words the alert](docs/img/how-it-works.en.png)
+
 Everything the model reads and the user sees exists in English and Spanish, one language per run.
 
 ## What I measured

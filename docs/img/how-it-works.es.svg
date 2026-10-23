@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 600" width="1400" height="600" role="img" aria-labelledby="t">
+<title id="t">Cómo decide Dealjudge si te avisa</title>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#3f3f46"/></marker>
+<marker id="arb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#2563eb"/></marker>
+<style>
+text{font-family:Inter,"Segoe UI",Helvetica,Arial,sans-serif;fill:#0a0a0a}
+.h{font-size:21px;font-weight:700}.s{font-size:15.5px;fill:#3f3f46}.k{font-size:14px;fill:#5f5f69;font-weight:600}
+.a{font-size:14.5px;fill:#3f3f46;font-weight:500}.big{font-size:26px;font-weight:800}
+</style></defs>
+<rect width="1400" height="600" fill="#ffffff"/>
+<text x="40" y="52" class="big">Cómo decide Dealjudge si te avisa</text>
+<rect x="30" y="100" width="250" height="130" rx="14" fill="#ffffff" stroke="#c9c9cf" stroke-width="1.5"/>
+<text x="48" y="134" class="h" fill="#0a0a0a" style="fill:#0a0a0a">Historial de precios</text>
+<text x="48" y="162" class="s">Registrador cada 6 h</text>
+<text x="48" y="184" class="s">mediana, mínimo y alza de 90 d</text>
+<text x="48" y="212" class="k">calculado en código</text>
+<rect x="390" y="100" width="250" height="130" rx="14" fill="#ffffff" stroke="#c9c9cf" stroke-width="1.5"/>
+<text x="408" y="134" class="h" fill="#0a0a0a" style="fill:#0a0a0a">Agente + hook</text>
+<text x="408" y="162" class="s">El agente Strands llama send_alert;</text>
+<text x="408" y="184" class="s">el hook corre antes de la acción</text>
+<rect x="750" y="100" width="250" height="130" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+<text x="768" y="134" class="h" fill="#1d4ed8" style="fill:#1d4ed8">Decider 2B</text>
+<text x="768" y="162" class="s">Tres preguntas tipadas:</text>
+<text x="768" y="184" class="s">¿descuento real? ¿nivel? ¿te calza?</text>
+<text x="768" y="212" class="k">respuestas + seguridad</text>
+<rect x="1110" y="100" width="250" height="130" rx="14" fill="#ffffff" stroke="#0a0a0a" stroke-width="2.5"/>
+<text x="1128" y="134" class="h" fill="#0a0a0a" style="fill:#0a0a0a">Regla de confianza</text>
+<text x="1128" y="162" class="s">Python simple</text>
+<text x="1128" y="184" class="s">seguridad más baja vs umbral</text>
+<text x="1128" y="212" class="k">decide la regla, no el modelo</text>
+<line x1="283" y1="165.0" x2="387" y2="165.0" stroke="#3f3f46" stroke-width="2.2" marker-end="url(#ar)"/>
+<text x="335.0" y="139.0" text-anchor="middle" class="a" style="font-size:13px">oferta +</text>
+<text x="335.0" y="153.0" text-anchor="middle" class="a" style="font-size:13px">historial</text>
+<line x1="643" y1="165.0" x2="747" y2="165.0" stroke="#2563eb" stroke-width="2.2" marker-end="url(#arb)"/>
+<text x="695.0" y="139.0" text-anchor="middle" class="a" style="font-size:13px">estado +</text>
+<text x="695.0" y="153.0" text-anchor="middle" class="a" style="font-size:13px">preguntas</text>
+<line x1="1003" y1="165.0" x2="1107" y2="165.0" stroke="#2563eb" stroke-width="2.2" marker-end="url(#arb)"/>
+<text x="1055.0" y="139.0" text-anchor="middle" class="a" style="font-size:13px">respuestas +</text>
+<text x="1055.0" y="153.0" text-anchor="middle" class="a" style="font-size:13px">seguridad</text>
+<rect x="30" y="345" width="300" height="120" rx="14" fill="#fffbeb" stroke="#f3d98b" stroke-width="1.5"/>
+<text x="48" y="379" class="h" fill="#92400e" style="fill:#92400e">Bedrock</text>
+<text x="48" y="407" class="s">redacta el texto del aviso</text>
+<text x="48" y="429" class="s">solo con las cifras del código</text>
+<rect x="445" y="345" width="260" height="120" rx="14" fill="#f0fdf4" stroke="#b7e4c7" stroke-width="1.5"/>
+<text x="463" y="379" class="h" fill="#15803d" style="fill:#15803d">Avisar</text>
+<text x="463" y="407" class="s">seguro, real, te calza</text>
+<text x="463" y="429" class="s"></text>
+<rect x="775" y="345" width="260" height="120" rx="14" fill="#fffbeb" stroke="#f3d98b" stroke-width="1.5"/>
+<text x="793" y="379" class="h" fill="#92400e" style="fill:#92400e">Avisar con advertencia</text>
+<text x="793" y="407" class="s">poca seguridad, &lt;14 días,</text>
+<text x="793" y="429" class="s">o Decider no respondió</text>
+<rect x="1105" y="345" width="260" height="120" rx="14" fill="#f4f4f5" stroke="#d4d4d8" stroke-width="1.5"/>
+<text x="1123" y="379" class="h" fill="#3f3f46" style="fill:#3f3f46">Callar</text>
+<text x="1123" y="407" class="s">seguro, no es una oferta real</text>
+<text x="1123" y="429" class="s"></text>
+<path d="M1235.0 233 V285" stroke="#3f3f46" stroke-width="2.2" fill="none"/>
+<path d="M575 285 H1235.0" stroke="#3f3f46" stroke-width="2.2" fill="none"/>
+<path d="M575 285 V342" stroke="#3f3f46" stroke-width="2.2" fill="none" marker-end="url(#ar)"/>
+<path d="M905 285 V342" stroke="#3f3f46" stroke-width="2.2" fill="none" marker-end="url(#ar)"/>
+<path d="M1235 285 V342" stroke="#3f3f46" stroke-width="2.2" fill="none" marker-end="url(#ar)"/>
+<path d="M333 405 H442" stroke="#92400e" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#ar)"/>
+<path d="M180 468 V495 H905 V468" stroke="#92400e" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#ar)"/>
+<text x="40" y="570" class="h" style="font-size:20px">Decider mide. La regla decide. Bedrock solo redacta el aviso.</text>
+</svg>

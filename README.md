@@ -6,7 +6,7 @@ and then it says so.
 
 *Spanish version: [README.es.md](README.es.md).*
 
-![Dealjudge: a verdict stamped on a price ticket, with the 90-day price chart and the median](docs/img/page-desktop.png)
+![Dealjudge: the verdict first, then how Decider decided: three typed answers with their confidence against the threshold, and the code rule](docs/img/page-desktop.png)
 
 *Everything in the screenshot is simulated; the stores are invented.*
 
@@ -33,6 +33,8 @@ A plain-Python rule (`src/dealjudge/policy.py`) turns the answers into one of th
 A Strands `InterventionHandler` applies that decision before the `send_alert` tool runs
 (`src/dealjudge/handler.py`), and Amazon Bedrock writes the alert text using only the figures the code hands it.
 The model is never the gate: Decider measures, `decide` decides.
+
+![How Dealjudge decides: code computes the history, Decider answers three typed questions, a plain-Python confidence rule picks alert, alert with warning or stay silent, and Bedrock only words the alert](docs/img/how-it-works.en.png)
 
 **One language per run.** Everything the model reads and the user sees (state text, questions, notices, reasons)
 comes from `src/dealjudge/i18n.py`, in English (default) or Spanish (`--lang es`). Internal identifiers are always English.

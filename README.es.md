@@ -5,7 +5,7 @@ días de precios. Solo avisa cuando hay algo real que decir, o cuando tiene duda
 
 *English version: [README.md](README.md).*
 
-![Dealjudge: un veredicto sellado sobre un ticket de precio, con el gráfico de 90 días y la mediana](docs/img/page-desktop.png)
+![Dealjudge: primero el veredicto y luego cómo decidió Decider: tres respuestas tipadas con su seguridad frente al umbral, y la regla en código](docs/img/page-desktop.png)
 
 *Todo lo que aparece en la captura es simulado; las tiendas son inventadas.*
 
@@ -33,6 +33,8 @@ Una regla en Python puro (`src/dealjudge/policy.py`) convierte las respuestas en
 Un `InterventionHandler` de Strands aplica esa decisión antes de que se ejecute la herramienta `send_alert`
 (`src/dealjudge/handler.py`), y Amazon Bedrock redacta el aviso usando solo las cifras que le entrega el código.
 El modelo nunca es la compuerta: Decider mide, `decide` decide.
+
+![Cómo decide Dealjudge: el código calcula el historial, Decider responde tres preguntas tipadas, una regla en Python elige avisar, avisar con advertencia o callar, y Bedrock solo redacta el aviso](docs/img/how-it-works.es.png)
 
 **Un idioma por ejecución.** Todo lo que lee el modelo y ve el usuario (texto de estado, preguntas, avisos,
 motivos) sale de `src/dealjudge/i18n.py`, en inglés (por defecto) o en español (`--lang es`). Los identificadores
