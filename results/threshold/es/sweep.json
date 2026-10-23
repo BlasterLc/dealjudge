@@ -1,0 +1,142 @@
+{
+  "meta": {
+    "lang": "es",
+    "dev_seed": 101,
+    "cases": 210,
+    "decider_failed": 0,
+    "chosen_threshold": 0.1,
+    "warnings_at_chosen": {
+      "low_confidence": 3,
+      "short_history": 30
+    },
+    "note": "development split only; the test split is never used here"
+  },
+  "rows": [
+    {
+      "threshold": 0.05,
+      "coverage": 0.857,
+      "decisive_accuracy": 0.889,
+      "action_accuracy": 0.905,
+      "mean_utility": 0.905
+    },
+    {
+      "threshold": 0.1,
+      "coverage": 0.843,
+      "decisive_accuracy": 0.893,
+      "action_accuracy": 0.895,
+      "mean_utility": 0.902
+    },
+    {
+      "threshold": 0.15,
+      "coverage": 0.79,
+      "decisive_accuracy": 0.892,
+      "action_accuracy": 0.848,
+      "mean_utility": 0.881
+    },
+    {
+      "threshold": 0.2,
+      "coverage": 0.738,
+      "decisive_accuracy": 0.897,
+      "action_accuracy": 0.805,
+      "mean_utility": 0.864
+    },
+    {
+      "threshold": 0.25,
+      "coverage": 0.676,
+      "decisive_accuracy": 0.915,
+      "action_accuracy": 0.762,
+      "mean_utility": 0.852
+    },
+    {
+      "threshold": 0.3,
+      "coverage": 0.61,
+      "decisive_accuracy": 0.922,
+      "action_accuracy": 0.705,
+      "mean_utility": 0.829
+    },
+    {
+      "threshold": 0.35,
+      "coverage": 0.557,
+      "decisive_accuracy": 0.932,
+      "action_accuracy": 0.662,
+      "mean_utility": 0.812
+    },
+    {
+      "threshold": 0.4,
+      "coverage": 0.448,
+      "decisive_accuracy": 0.968,
+      "action_accuracy": 0.576,
+      "mean_utility": 0.781
+    },
+    {
+      "threshold": 0.45,
+      "coverage": 0.357,
+      "decisive_accuracy": 0.973,
+      "action_accuracy": 0.49,
+      "mean_utility": 0.74
+    },
+    {
+      "threshold": 0.5,
+      "coverage": 0.257,
+      "decisive_accuracy": 0.963,
+      "action_accuracy": 0.39,
+      "mean_utility": 0.69
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.157,
+      "decisive_accuracy": 0.939,
+      "action_accuracy": 0.29,
+      "mean_utility": 0.64
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.043,
+      "decisive_accuracy": 1.0,
+      "action_accuracy": 0.186,
+      "mean_utility": 0.593
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.019,
+      "decisive_accuracy": 1.0,
+      "action_accuracy": 0.162,
+      "mean_utility": 0.581
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.014,
+      "decisive_accuracy": 1.0,
+      "action_accuracy": 0.157,
+      "mean_utility": 0.579
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.014,
+      "decisive_accuracy": 1.0,
+      "action_accuracy": 0.157,
+      "mean_utility": 0.579
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.0,
+      "decisive_accuracy": null,
+      "action_accuracy": 0.143,
+      "mean_utility": 0.571
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.0,
+      "decisive_accuracy": null,
+      "action_accuracy": 0.143,
+      "mean_utility": 0.571
+    },
+    {
+      "threshold": 0.9,
+      "coverage": 0.0,
+      "decisive_accuracy": null,
+      "action_accuracy": 0.143,
+      "mean_utility": 0.571
+    }
+  ]
+}

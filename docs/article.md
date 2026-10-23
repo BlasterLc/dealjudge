@@ -63,9 +63,9 @@ What this says, without spin:
   0.74-0.79). Decider is weakest on the middle levels (`good` 0.70, `very_good` 0.52 in English) and on offers
   sitting right on the 10 % line, where it only matches the old rule (0.60 English, 0.67 Spanish; the LLM scores 0.83).
 - **What Decider adds is not raw accuracy.** It returns probabilities in one local call, with no API cost and no
-  failed calls (the LLM failed 8 and 6 times, which I count as warnings), and the code can use them: Decider
-  answered decisively on 86 % of offers in English (83 % in Spanish) and was right 93 % (91 %) of the time on
-  those; the rest were announced with a warning instead of a guess.
+  failed calls (the LLM failed 8 and 6 times, which I count as warnings), and the code can gate on them. It answered
+  decisively on 86 % of offers in English (83 % in Spanish) and was right 93 % (91 %) of the time on those, but that
+  gate did very little here: see "What the confidence gate does" below.
 - **Calibration is imperfect.** For real/fake the expected calibration error is 0.13 (EN) and 0.17 (ES), mostly
   because the model is under-confident (right 100 % of the time at a mean confidence of about 0.87 in English). For the
   offer level it is 0.37 and 0.35, which is why the threshold is fit on data.
@@ -77,6 +77,19 @@ What this says, without spin:
   rate-limited 52 of 70 sequential calls on this account (retries off), probably why the LLM "failed" 8 and 6 times
   in the evaluation. The evaluation's own latency lines (484 ms EN, 744 ms ES) interleave the two models' calls,
   which inflated Decider in my tests (545 ms against 278 ms), so I quote the benchmark instead.
+
+**What the confidence gate does.** At the chosen threshold (0.10) it almost never fires. On the test split the
+30 offers Decider did not answer decisively in English are exactly the 30 with under 14 days of history, warned by
+rule: the confidence gate fired on 0 of 210 cases. In Spanish it fired on 6 (36 warnings, 30 of them from the history
+rule). So the "86 % decisive, 93 % right" figures describe offers with enough history, not a model that knew when
+to abstain. The sweep below (development split, the one the threshold is fixed on; `scripts/threshold_sweep.py`)
+shows what a stricter gate would buy. In Spanish, accuracy on the answers it commits to rises from 0.89 to 0.97 as
+the threshold goes from 0.1 to 0.4, while the share it commits to falls from 0.84 to 0.45. In English it does not
+rise (0.94 at 0.1, 0.89 at 0.4), so there the confidence is not a useful signal to abstain on this data. I kept 0.1
+because it maximises the utility I defined (an exact hit is worth 1, a warning when the truth is decisive 0.5,
+a wrong answer 0).
+
+![Threshold sweep on the development split: share of offers answered decisively, accuracy on those, and mean utility, for thresholds from 0.05 to 0.9, English](docs/img/threshold-sweep.en.png)
 
 The offers are **simulated**: a public generator builds 90-day series and the correct answer comes from the
 series' own figures. That makes the benchmark about how well a 2B model reads figures, not about real stores.

@@ -80,8 +80,9 @@ test split (seed 303, never inspected while tuning). 210 simulated test offers, 
 Decider + rule is clearly better than the old rule (+13 points in English, +10 in Spanish). Against the larger LLM
 it is a **technical tie on whether to alert** (0.943 vs 0.938 in English is noise at n=210) and it **loses on the
 offer level** (0.79 vs 0.92). What it adds is one local call with no API cost, no failed calls (the LLM failed 8 and
-6 times, counted as warnings) and probabilities the code uses to warn instead of guess: it answered decisively on
-86 % (EN) / 83 % (ES) of offers and was right 93 % / 91 % of the time on those.
+6 times, counted as warnings) and a confidence the code can gate on. It answered decisively on 86 % (EN) / 83 % (ES)
+of test offers and was right 93 % / 91 % of the time on those, but on this benchmark the confidence gate did very
+little (see below).
 
 **Latency and cost, measured on their own** (`scripts/bench_latency_cost.py`, English, 70 simulated states from the
 development seed, sequential calls, Decider and the LLM in separate phases; results in `results/bench/en/`):
@@ -99,6 +100,19 @@ evaluation. The evaluation's own latency lines (484 ms EN, 744 ms ES for Decider
 in my tests that inflated Decider (545 ms interleaved against 278 ms in separate phases), probably because the laptop
 GPU lowers its clock while it waits for the slow LLM calls. Quote the benchmark, not those lines. Only English was
 benchmarked.
+
+**What the confidence gate does.** At the chosen threshold (0.10) it almost never fires. On the test split the
+30 offers Decider did not answer decisively in English are exactly the 30 with under 14 days of history, warned by
+rule: the confidence gate fired on 0 of 210 cases. In Spanish it fired on 6 (36 warnings, 30 of them from the history
+rule). So the "86 % decisive, 93 % right" figures describe offers with enough history, not a model that knew when
+to abstain. The sweep below (development split, the one the threshold is fixed on; `scripts/threshold_sweep.py`)
+shows what a stricter gate would buy. In Spanish, accuracy on the answers it commits to rises from 0.89 to 0.97 as
+the threshold goes from 0.1 to 0.4, while the share it commits to falls from 0.84 to 0.45. In English it does not
+rise (0.94 at 0.1, 0.89 at 0.4), so there the confidence is not a useful signal to abstain on this data. I kept 0.1
+because it maximises the utility I defined (an exact hit is worth 1, a warning when the truth is decisive 0.5,
+a wrong answer 0).
+
+![Threshold sweep on the development split: share of offers answered decisively, accuracy on those, and mean utility, for thresholds from 0.05 to 0.9, English](docs/img/threshold-sweep.en.png)
 
 **English reads better.** On the same offers Decider scored higher in English than in Spanish (real/fake 1.00 vs
 0.95, level 0.79 vs 0.74, alert 0.943 vs 0.919). The same direction appeared on the development seed. The LLM baseline

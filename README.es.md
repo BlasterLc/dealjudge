@@ -81,9 +81,9 @@ de prueba (semilla 303, nunca inspeccionada al ajustar). 210 ofertas simuladas d
 Decider + regla es claramente mejor que la regla antigua (+13 puntos en inglés, +10 en español). Frente al LLM
 grande es un **empate técnico en si avisar** (0,943 contra 0,938 en inglés es ruido con n=210) y **pierde en el
 nivel de oferta** (0,79 contra 0,92). Lo que aporta es una llamada local sin costo de API, sin llamadas fallidas
-(el LLM falló 8 y 6 veces, contadas como advertencias) y probabilidades que el código usa para advertir en vez de
-adivinar: respondió con decisión en el 86 % (EN) / 83 % (ES) de las ofertas y acertó el 93 % / 91 % de las veces
-en esas.
+(el LLM falló 8 y 6 veces, contadas como advertencias) y una confianza sobre la que el código puede filtrar.
+Respondió con decisión en el 86 % (EN) / 83 % (ES) de las ofertas de prueba y acertó el 93 % / 91 % de las veces
+en esas, pero en este benchmark la puerta de confianza hizo muy poco (ver abajo).
 
 **Latencia y costo, medidos por separado** (`scripts/bench_latency_cost.py`, inglés, 70 estados simulados de la
 semilla de desarrollo, llamadas secuenciales, Decider y el LLM en fases separadas; resultados en `results/bench/en/`):
@@ -101,6 +101,19 @@ por eso el LLM falló 8 y 6 veces en la evaluación. Las líneas de latencia de 
 ES para Decider) intercalan llamadas a Decider y al LLM; en mis pruebas eso inflaba a Decider (545 ms intercalado
 contra 278 ms en fases separadas), probablemente porque la GPU del portátil baja su reloj mientras espera las
 llamadas lentas al LLM. Cita el benchmark, no esas líneas. Solo se midió en inglés.
+
+**Qué hace la puerta de confianza.** Con el umbral elegido (0,10) casi nunca se activa. En la partición de prueba,
+las 30 ofertas en las que Decider no respondió con decisión en inglés son exactamente las 30 con menos de 14 días de
+historial, que advierte la regla: la puerta de confianza se activó en 0 de 210 casos. En español se activó en 6 (36
+advertencias, 30 de ellas por la regla de historial). Así que el "86 % decisivo, 93 % de acierto" describe ofertas
+con historial suficiente, no a un modelo que supiera cuándo abstenerse. El barrido de abajo (partición de desarrollo,
+la misma en la que se fija el umbral; `scripts/threshold_sweep.py`) muestra qué compraría una puerta más estricta.
+En español, el acierto en las respuestas que da sube de 0,89 a 0,97 al pasar el umbral de 0,1 a 0,4, mientras la
+proporción que decide cae de 0,84 a 0,45. En inglés no sube (0,94 con 0,1, 0,89 con 0,4), así que ahí la confianza
+no sirve como señal para abstenerse con estos datos. Dejé 0,1 porque maximiza la utilidad que definí (un acierto
+exacto vale 1, una advertencia cuando la verdad es decisiva vale 0,5, una respuesta equivocada 0).
+
+![Barrido del umbral en la partición de desarrollo: proporción de ofertas con respuesta decisiva, acierto en ellas y utilidad media, para umbrales de 0,05 a 0,9, español](docs/img/threshold-sweep.es.png)
 
 **En inglés lee mejor.** Con las mismas ofertas, Decider puntuó más alto en inglés que en español (real/falso 1,00
 contra 0,95, nivel 0,79 contra 0,74, aviso 0,943 contra 0,919). La misma dirección apareció en la semilla de
