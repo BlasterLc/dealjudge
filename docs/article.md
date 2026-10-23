@@ -26,6 +26,18 @@ and Amazon Bedrock writes the alert text from figures the code provides. The mod
 
 Everything the model reads and the user sees exists in English and Spanish, one language per run.
 
+## The page: the verdict first, then how Decider decided
+
+Dealjudge also ships a small static page (simulated stores and prices). It leads with the verdict and then shows
+*how Decider decided*: its three typed answers, each with its confidence set against the threshold, and the code
+rule that turned them into an action. The 90-day chart is there as evidence, folded away: the point is the
+decision, not the chart.
+
+![The Dealjudge page: the verdict, then Decider's three answers with their confidence against the threshold, and the code rule](docs/img/page-desktop.png)
+
+The page reads data that was already judged (`web/data/demo.<lang>.json`, written by `scripts/build_demo.py` with
+the real Decider and Bedrock). Its "add a product" search is a small simulated catalogue, not a live search.
+
 ## What I measured
 
 All numbers below are on **simulated** offers: 7 scenarios, 30 cases each, 210 test cases (seed 303), run once in
@@ -115,4 +127,5 @@ products by message and Decider on SageMaker are not built.
 ## Try it
 
 `uv venv && uv pip install -e ".[dev]"`, start `strands-decider serve`, then
-`scripts/run_evaluation.py --lang en` and `python -m http.server -d web`. Everything is Apache-2.0.
+`scripts/run_evaluation.py --lang en`, `scripts/bench_latency_cost.py` for the latency and cost table, and
+`python -m http.server -d web` for the page. Everything is Apache-2.0.

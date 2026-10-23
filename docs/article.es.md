@@ -27,6 +27,18 @@ compuerta.
 
 Todo lo que lee el modelo y ve el usuario existe en inglés y en español, un idioma por ejecución.
 
+## La página: primero el veredicto, luego cómo decidió Decider
+
+Dealjudge incluye además una página estática pequeña (tiendas y precios simulados). Abre con el veredicto y después
+muestra *cómo decidió Decider*: sus tres respuestas tipadas, cada una con su seguridad frente al umbral, y la regla
+en código que las convirtió en una acción. El gráfico de 90 días está como evidencia, plegado: lo importante es la
+decisión, no el gráfico.
+
+![La página de Dealjudge: el veredicto, luego las tres respuestas de Decider con su seguridad frente al umbral, y la regla en código](docs/img/page-desktop.es.png)
+
+La página lee datos ya juzgados (`web/data/demo.<idioma>.json`, escritos por `scripts/build_demo.py` con el Decider
+y Bedrock reales). Su búsqueda de "agregar producto" es un catálogo simulado pequeño, no una búsqueda en vivo.
+
 ## Qué medí
 
 Todas las cifras de abajo son sobre ofertas **simuladas**: 7 escenarios, 30 casos cada uno, 210 casos de prueba
@@ -121,4 +133,5 @@ SageMaker.
 ## Pruébalo
 
 `uv venv && uv pip install -e ".[dev]"`, inicia `strands-decider serve`, luego
-`scripts/run_evaluation.py --lang es` y `python -m http.server -d web`. Todo es Apache-2.0.
+`scripts/run_evaluation.py --lang es`, `scripts/bench_latency_cost.py` para la tabla de latencia y costo, y
+`python -m http.server -d web` para la página. Todo es Apache-2.0.
