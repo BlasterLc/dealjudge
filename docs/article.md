@@ -22,7 +22,7 @@ Then **plain Python decides** (`policy.py`): a confident real discount that fits
 warning** (`alert_with_warning`). A Strands `InterventionHandler` applies that before the `send_alert` tool runs,
 and Amazon Bedrock writes the alert text from figures the code provides. The model is never the gate.
 
-![How Dealjudge decides: code computes the history, Decider answers three typed questions, a plain-Python confidence rule picks alert, alert with warning or stay silent, and Bedrock only words the alert](docs/img/how-it-works.en.png)
+![How Dealjudge decides: code computes the history, Decider answers three typed questions, a plain-Python confidence rule picks alert, alert with warning or stay silent, and Bedrock only words the alert](img/how-it-works.en.png)
 
 Everything the model reads and the user sees exists in English and Spanish, one language per run.
 
@@ -33,7 +33,7 @@ Dealjudge also ships a small static page (simulated stores and prices). It leads
 rule that turned them into an action. The 90-day chart is there as evidence, folded away: the point is the
 decision, not the chart.
 
-![The Dealjudge page: the verdict, then Decider's three answers with their confidence against the threshold, and the code rule](docs/img/page-desktop.png)
+![The Dealjudge page: the verdict, then Decider's three answers with their confidence against the threshold, and the code rule](img/page-desktop.png)
 
 The page reads data that was already judged (`web/data/demo.<lang>.json`, written by `scripts/build_demo.py` with
 the real Decider and Bedrock). Its "add a product" search is a small simulated catalogue, not a live search.
@@ -89,7 +89,7 @@ rise (0.94 at 0.1, 0.89 at 0.4), so there the confidence is not a useful signal 
 because it maximises the utility I defined (an exact hit is worth 1, a warning when the truth is decisive 0.5,
 a wrong answer 0).
 
-![Threshold sweep on the development split: share of offers answered decisively, accuracy on those, and mean utility, for thresholds from 0.05 to 0.9, English](docs/img/threshold-sweep.en.png)
+![Threshold sweep on the development split: share of offers answered decisively, accuracy on those, and mean utility, for thresholds from 0.05 to 0.9, English](img/threshold-sweep.en.png)
 
 The offers are **simulated**: a public generator builds 90-day series and the correct answer comes from the
 series' own figures. That makes the benchmark about how well a 2B model reads figures, not about real stores.

@@ -23,7 +23,7 @@ visible** (`alert_with_warning`). Un `InterventionHandler` de Strands aplica eso
 `send_alert`, y Amazon Bedrock redacta el aviso a partir de cifras que entrega el código. El modelo nunca es la
 compuerta.
 
-![Cómo decide Dealjudge: el código calcula el historial, Decider responde tres preguntas tipadas, una regla en Python elige avisar, avisar con advertencia o callar, y Bedrock solo redacta el aviso](docs/img/how-it-works.es.png)
+![Cómo decide Dealjudge: el código calcula el historial, Decider responde tres preguntas tipadas, una regla en Python elige avisar, avisar con advertencia o callar, y Bedrock solo redacta el aviso](img/how-it-works.es.png)
 
 Todo lo que lee el modelo y ve el usuario existe en inglés y en español, un idioma por ejecución.
 
@@ -34,7 +34,7 @@ muestra *cómo decidió Decider*: sus tres respuestas tipadas, cada una con su s
 en código que las convirtió en una acción. El gráfico de 90 días está como evidencia, plegado: lo importante es la
 decisión, no el gráfico.
 
-![La página de Dealjudge: el veredicto, luego las tres respuestas de Decider con su seguridad frente al umbral, y la regla en código](docs/img/page-desktop.es.png)
+![La página de Dealjudge: el veredicto, luego las tres respuestas de Decider con su seguridad frente al umbral, y la regla en código](img/page-desktop.es.png)
 
 La página lee datos ya juzgados (`web/data/demo.<idioma>.json`, escritos por `scripts/build_demo.py` con el Decider
 y Bedrock reales). Su búsqueda de "agregar producto" es un catálogo simulado pequeño, no una búsqueda en vivo.
@@ -92,7 +92,7 @@ proporción que decide cae de 0,84 a 0,45. En inglés no sube (0,94 con 0,1, 0,8
 no sirve como señal para abstenerse con estos datos. Dejé 0,1 porque maximiza la utilidad que definí (un acierto
 exacto vale 1, una advertencia cuando la verdad es decisiva vale 0,5, una respuesta equivocada 0).
 
-![Barrido del umbral en la partición de desarrollo: proporción de ofertas con respuesta decisiva, acierto en ellas y utilidad media, para umbrales de 0,05 a 0,9, español](docs/img/threshold-sweep.es.png)
+![Barrido del umbral en la partición de desarrollo: proporción de ofertas con respuesta decisiva, acierto en ellas y utilidad media, para umbrales de 0,05 a 0,9, español](img/threshold-sweep.es.png)
 
 Las ofertas son **simuladas**: un generador público construye series de 90 días y la respuesta correcta sale de
 las cifras de la propia serie. Eso hace que el benchmark trate de qué tan bien un modelo de 2B lee cifras, no de
