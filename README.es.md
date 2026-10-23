@@ -1,15 +1,35 @@
-# Dealjudge
+<p align="center">
+  <img src="docs/img/logo.svg" alt="Dealjudge logo" width="72" />
+</p>
 
-**¿Este descuento es real?** Dealjudge vigila productos concretos y juzga cada descuento contra los últimos 90
-días de precios. Solo avisa cuando hay algo real que decir, o cuando tiene dudas, y entonces lo dice.
+<h1 align="center">Dealjudge</h1>
 
-*English version: [README.md](README.md).*
+<p align="center"><em>¿Este descuento es real? Decider mide, el código decide.</em></p>
+
+<p align="center">
+  Un agente que juzga cada descuento contra los últimos 90 días de precios, solo avisa cuando hay algo real que decir y te advierte cuando tiene dudas.
+</p>
+
+<p align="center">
+  <a href="docs/article.es.md"><strong>Artículo</strong></a> ·
+  <a href="patterns/policy/README.es.md">Patrón reutilizable <code>#policy</code></a> ·
+  <a href="README.md">English</a>
+</p>
+
+<p align="center">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-116%20passing-1f7a4d" />
+  <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-2563eb" />
+  <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-555" />
+  <img alt="Decider" src="https://img.shields.io/badge/Strands%20Decider-2B-0a0a0a" />
+  <img alt="Bedrock" src="https://img.shields.io/badge/Amazon%20Bedrock-Nova%20Lite-b5542e" />
+  <img alt="Languages" src="https://img.shields.io/badge/UI-English%20%C2%B7%20Espa%C3%B1ol-555" />
+</p>
+
+> **Strands Decider Agent Hackathon** (AWS) · etiquetas `#strands-decider-2b` `#policy`
 
 ![Dealjudge: primero el veredicto y luego cómo decidió Decider: tres respuestas tipadas con su seguridad frente al umbral, y la regla en código](docs/img/page-desktop.png)
 
 *Todo lo que aparece en la captura es simulado; las tiendas son inventadas.*
-
-Hecho para el **Agent Experience Hackathon: Strands Decider** de AWS. Etiqueta de patrón: `#policy`.
 
 ## Qué hace
 

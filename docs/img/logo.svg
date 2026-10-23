@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="128" height="128" role="img" aria-label="Dealjudge: a judge's gavel">
+  <rect width="32" height="32" rx="8" fill="#0a0a0a"/>
+  <rect x="11.5" y="5.5" width="11" height="6.5" rx="1.6" transform="rotate(38 17 9)" fill="#fff"/>
+  <path d="M15.5 14.5 7 23M6 26.5h10" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+</svg>
