@@ -388,16 +388,16 @@
         "reason": "It is not a real deal or it does not meet what you ask.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No alert sent. It is not a real deal or it does not meet what you ask.",
       "decider": {
-        "is_real_p": 0.095,
-        "level_conf": 0.331,
-        "level_prob": 0.465,
+        "is_real_p": 0.096,
+        "level_conf": 0.328,
+        "level_prob": 0.463,
         "fits_p": 0.618,
         "fits_used": 0.0,
-        "latency_ms": null,
+        "latency_ms": 595,
         "failed": false
-      }
+      },
+      "notice": "No alert sent. It is not a real deal or it does not meet what you ask."
     },
     {
       "id": "inflated_spike-004",
@@ -783,16 +783,16 @@
         "reason": "It is not a real deal or it does not meet what you ask.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No alert sent. It is not a real deal or it does not meet what you ask.",
       "decider": {
         "is_real_p": 0.121,
-        "level_conf": 0.366,
+        "level_conf": 0.367,
         "level_prob": 0.493,
-        "fits_p": 0.631,
+        "fits_p": 0.634,
         "fits_used": 0.0,
-        "latency_ms": null,
+        "latency_ms": 263,
         "failed": false
-      }
+      },
+      "notice": "No alert sent. It is not a real deal or it does not meet what you ask."
     },
     {
       "id": "genuine_drop-006",
@@ -1178,16 +1178,16 @@
         "reason": "Real discount that meets what you ask.",
         "reason_code": "real_and_fits"
       },
-      "notice": "Take advantage of this mid-range laptop now priced at CLP 217,600, a 42% discount from the 90-day median of CLP 373,420. This is also the lowest price recorded.",
       "decider": {
-        "is_real_p": 0.768,
-        "level_conf": 0.268,
+        "is_real_p": 0.762,
+        "level_conf": 0.267,
         "level_prob": 0.414,
         "fits_p": 0.382,
         "fits_used": 1.0,
-        "latency_ms": null,
+        "latency_ms": 395,
         "failed": false
-      }
+      },
+      "notice": "The mid-range laptop you're interested in is currently priced at CLP 217,600, which is CLP 155,820 less than the 90-day median price of CLP 373,420, representing a 42% discount. This is also the lowest price recorded for this product."
     },
     {
       "id": "genuine_drop-002",
@@ -1573,16 +1573,16 @@
         "reason": "Real discount that meets what you ask.",
         "reason_code": "real_and_fits"
       },
-      "notice": "The Air fryer is currently priced at CLP 45,320, which is 35% below the 90-day median of CLP 70,195. This is also just CLP 10 more than the lowest recorded price.",
       "decider": {
-        "is_real_p": 0.772,
-        "level_conf": 0.322,
-        "level_prob": 0.457,
+        "is_real_p": 0.771,
+        "level_conf": 0.323,
+        "level_prob": 0.458,
         "fits_p": 0.837,
         "fits_used": 1.0,
-        "latency_ms": null,
+        "latency_ms": 314,
         "failed": false
-      }
+      },
+      "notice": "I've noticed that the Air fryer is currently priced at CLP 45,320, which is CLP 24,875 less than the 90-day median of CLP 70,195, representing a 35% discount. The lowest price recorded for this product is CLP 45,310."
     },
     {
       "id": "short_history-004",
@@ -1624,16 +1624,16 @@
         "reason": "There is little price history to judge.",
         "reason_code": "short_history"
       },
-      "notice": "The Mechanical keyboard is currently priced at CLP 40,020, which is 34% below the 90-day median of CLP 60,185. This is also the lowest price recorded. However, there is little price history to judge.",
       "decider": {
-        "is_real_p": 0.784,
+        "is_real_p": 0.779,
         "level_conf": 0.335,
         "level_prob": 0.468,
-        "fits_p": 0.825,
+        "fits_p": 0.824,
         "fits_used": 1.0,
-        "latency_ms": null,
+        "latency_ms": 256,
         "failed": false
-      }
+      },
+      "notice": "The Mechanical keyboard is currently priced at CLP 40,020, which is 34% below the 90-day median of CLP 60,185. Please note that there is little price history to judge."
     },
     {
       "id": "normal_fluctuation-007",
@@ -2019,16 +2019,16 @@
         "reason": "It is not a real deal or it does not meet what you ask.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No alert sent. It is not a real deal or it does not meet what you ask.",
       "decider": {
         "is_real_p": 0.096,
-        "level_conf": 0.275,
-        "level_prob": 0.42,
-        "fits_p": 0.714,
+        "level_conf": 0.281,
+        "level_prob": 0.425,
+        "fits_p": 0.716,
         "fits_used": 0.0,
-        "latency_ms": null,
+        "latency_ms": 251,
         "failed": false
-      }
+      },
+      "notice": "No alert sent. It is not a real deal or it does not meet what you ask."
     }
   ]
 }

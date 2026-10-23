@@ -76,6 +76,8 @@ _TEXT = {
         "offer_id, the product name and the current price. The tool may reject the alert: "
         "if it does, do not insist and do not make up another alert.",
         "notice_prompt": "Write an offer alert of 2 or 3 sentences in English, clear and without exaggeration.\n"
+        "Tone: neutral and factual, from an assistant that watches prices for the user. Do not sound like an advertisement: "
+        "no exclamation marks, no \"don't miss out\", and do not speak as the store (you are not the seller).\n"
         "Use ONLY these figures, without inventing others:\n"
         "- product: {product}\n- current price: {price}\n- 90-day median: {median}\n"
         "- real discount vs the median: {pct}%\n- lowest price: {minimum}\n{warning}\n"
@@ -131,6 +133,9 @@ _TEXT = {
         "offer_id, el nombre del producto y el precio actual. La herramienta puede rechazar el aviso: "
         "si lo rechaza, no insistas ni inventes otro aviso.",
         "notice_prompt": "Escribe un aviso de oferta de 2 o 3 frases en español, claro y sin exagerar.\n"
+        "Tono: neutro y factual, de un asistente que vigila precios para el usuario. Trátalo de tú (nunca voseo: no uses "
+        "\"aprovechá\", \"mirá\"). No suenes a publicidad: sin signos de exclamación, sin \"no te lo pierdas\", y no hables "
+        "como la tienda (tú no eres el vendedor).\n"
         "Usa SOLO estas cifras, sin inventar otras:\n"
         "- producto: {product}\n- precio actual: {price}\n- mediana de 90 días: {median}\n"
         "- descuento real contra la mediana: {pct} %\n- precio mínimo: {minimum}\n{warning}\n"

@@ -388,16 +388,16 @@
         "reason": "No es una oferta real o no cumple lo que pides.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No se avisó. No es una oferta real o no cumple lo que pides.",
       "decider": {
         "is_real_p": 0.087,
-        "level_conf": 0.593,
-        "level_prob": 0.675,
-        "fits_p": 0.711,
+        "level_conf": 0.595,
+        "level_prob": 0.676,
+        "fits_p": 0.713,
         "fits_used": 0.0,
-        "latency_ms": null,
+        "latency_ms": 278,
         "failed": false
-      }
+      },
+      "notice": "No se avisó. No es una oferta real o no cumple lo que pides."
     },
     {
       "id": "inflated_spike-004",
@@ -783,16 +783,16 @@
         "reason": "No es una oferta real o no cumple lo que pides.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No se avisó. No es una oferta real o no cumple lo que pides.",
       "decider": {
         "is_real_p": 0.111,
         "level_conf": 0.582,
         "level_prob": 0.666,
-        "fits_p": 0.62,
+        "fits_p": 0.616,
         "fits_used": 0.0,
-        "latency_ms": null,
+        "latency_ms": 334,
         "failed": false
-      }
+      },
+      "notice": "No se avisó. No es una oferta real o no cumple lo que pides."
     },
     {
       "id": "genuine_drop-006",
@@ -1178,16 +1178,16 @@
         "reason": "Descuento real que cumple lo que pides.",
         "reason_code": "real_and_fits"
       },
-      "notice": "¡Oferta imperdible! Notebook de gama media a solo $217.600. Ahorra un 42% comparado con la mediana de 90 días. ¡Precio mínimo garantizado!",
       "decider": {
-        "is_real_p": 0.591,
-        "level_conf": 0.289,
-        "level_prob": 0.432,
-        "fits_p": 0.683,
+        "is_real_p": 0.592,
+        "level_conf": 0.28,
+        "level_prob": 0.424,
+        "fits_p": 0.686,
         "fits_used": 1.0,
-        "latency_ms": null,
+        "latency_ms": 342,
         "failed": false
-      }
+      },
+      "notice": "Hay una oferta para un Notebook de gama media a $217.600. Este precio es un 42% menor que la mediana de los últimos 90 días, que fue de $373.420. Es también el precio mínimo que hemos encontrado."
     },
     {
       "id": "genuine_drop-002",
@@ -1573,16 +1573,16 @@
         "reason": "Descuento real que cumple lo que pides.",
         "reason_code": "real_and_fits"
       },
-      "notice": "¡Aprovecha esta oportunidad! Adquiere nuestra Freidora de aire a solo $45.320, un 35% menos que la mediana de 90 días. ¡No te lo pierdas!",
       "decider": {
-        "is_real_p": 0.53,
-        "level_conf": 0.24,
-        "level_prob": 0.392,
-        "fits_p": 0.74,
+        "is_real_p": 0.522,
+        "level_conf": 0.232,
+        "level_prob": 0.385,
+        "fits_p": 0.742,
         "fits_used": 1.0,
-        "latency_ms": null,
+        "latency_ms": 282,
         "failed": false
-      }
+      },
+      "notice": "Le informo que la freidora de aire que estás buscando tiene un precio actual de $45.320. Este precio es un 35% menor que la mediana de los últimos 90 días, que fue de $70.195. El precio mínimo que he encontrado para este producto es de $45.310."
     },
     {
       "id": "short_history-004",
@@ -1624,16 +1624,16 @@
         "reason": "Hay poco historial de precios para juzgar.",
         "reason_code": "short_history"
       },
-      "notice": "¡Oferta especial! Consigue un teclado mecánico por solo $40.020, un 34% menos que la mediana de 90 días de $60.185. Hay poco historial de precios para juzgar.",
       "decider": {
-        "is_real_p": 0.484,
-        "level_conf": 0.293,
-        "level_prob": 0.434,
+        "is_real_p": 0.476,
+        "level_conf": 0.296,
+        "level_prob": 0.437,
         "fits_p": 0.763,
         "fits_used": 1.0,
-        "latency_ms": null,
+        "latency_ms": 262,
         "failed": false
-      }
+      },
+      "notice": "Hay una oferta para el teclado mecánico que estás siguiendo. Actualmente, su precio es de $40.020, lo cual representa un descuento del 34% respecto a la mediana de los últimos 90 días. Ten en cuenta que hay poco historial de precios para juzgar."
     },
     {
       "id": "normal_fluctuation-007",
@@ -2019,16 +2019,16 @@
         "reason": "No es una oferta real o no cumple lo que pides.",
         "reason_code": "not_real_or_no_fit"
       },
-      "notice": "No se avisó. No es una oferta real o no cumple lo que pides.",
       "decider": {
-        "is_real_p": 0.097,
-        "level_conf": 0.328,
-        "level_prob": 0.463,
-        "fits_p": 0.655,
+        "is_real_p": 0.096,
+        "level_conf": 0.332,
+        "level_prob": 0.465,
+        "fits_p": 0.66,
         "fits_used": 0.0,
-        "latency_ms": null,
+        "latency_ms": 289,
         "failed": false
-      }
+      },
+      "notice": "No se avisó. No es una oferta real o no cumple lo que pides."
     }
   ]
 }
