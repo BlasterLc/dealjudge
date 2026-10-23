@@ -1,16 +1,22 @@
-# Video script (under 3:00)
+# Video script, English narration (under 3:00)
 
-Narration in Spanish, English subtitles. Use only the fictional stores shown in the page. No music, or music with a
-license that allows it. Screen: the Dealjudge page at 1280 px. Record the pages in `web/` from a local server.
+Spanish version: [video-script.es.md](video-script.es.md). Record one language per video; use the matching
+`--lang`/page language and the numbers from `results/<lang>/evaluation.json`. This script uses `results/en/`.
+
+Narration in English, Spanish subtitles (or the reverse with the Spanish script). Use only the fictional stores shown
+in the page. No music, or music with a license that allows it. Screen: the Dealjudge page at 1280 px, in the same
+language as the narration. Record the pages in `web/` from a local server. Do not show third-party brand names
+(the related-work section of the article is not filmed).
 
 | Time | Screen | Narration |
 |---|---|---|
-| 0:00-0:20 | A price tag with a big red "-25 %"; cut to the page | "En cada Cyber hay descuentos que no lo son: el precio sube semanas antes y luego baja a donde siempre estuvo. Dealjudge juzga cada oferta contra 90 días de precios." |
-| 0:20-0:55 | Click the first ticket (inflated spike). Zoom the red spike on the chart, then the stamp NO AVISAR | "Aquí la tienda anuncia 50 mil, pero el precio estuvo inflado: la mediana de 90 días es casi igual a hoy. Decider lo lee y responde con seguridad: no es real. Dealjudge calla, y explica por qué." |
-| 0:55-1:25 | Click the genuine drop (AVISAR), show "Lo que recibirías" | "Esta sí es una baja real, muy por debajo de la mediana. Solo aquí avisa, con las cifras que lo respaldan; Bedrock redacta el texto." |
-| 1:25-1:50 | Click the short-history case (AVISAR CON CAUTELA) | "Cuando no está seguro, o hay poco historial, avisa igual pero con una advertencia visible. La duda no se esconde." |
-| 1:50-2:30 | `results/evaluation.md`: the table and the calibration lines | "Lo medimos contra la regla de antes y contra un LLM, con ofertas simuladas y declaradas como tales. Decider acierta 90 % al decidir si avisar, contra 75 % de la regla anterior. Un LLM grande de Bedrock llega a 95 %, y ahí Decider pierde; lo que da es una sola llamada local, sin costo y sin fallas, con probabilidades que el código usa para avisar con advertencia cuando duda." |
-| 2:30-2:50 | `patterns/policy/policy_gate.py` and its README | "El patrón es reutilizable: preguntas tipadas, tu propia función decide, falla cerrado. Un solo archivo." |
-| 2:50-3:00 | Repo URL and article title | "Dealjudge, Apache-2.0. Código y artículo en el enlace." |
+| 0:00-0:20 | A price tag with a big red "-25 %"; cut to the page | "Every Cyber sale has discounts that are not: the price goes up weeks before and then drops back to where it always was. Dealjudge judges every offer against 90 days of prices." |
+| 0:20-0:55 | Open the inflated-spike product. Zoom the red spike on the chart, then the verdict "stay silent" | "Here the store advertises a big discount, but the price was inflated: the 90-day median is almost the same as today. Decider reads the figures and answers with confidence: it is not real. Dealjudge stays quiet, and explains why." |
+| 0:55-1:25 | Open the genuine-drop product (alert), show the alert text | "This one is a real drop, far below the median. Only here does it alert, with the figures behind it; Bedrock writes the text." |
+| 1:25-1:50 | Open the short-history product (alert with warning) | "When it is not sure, or there is little history, it still alerts but with a visible warning. Doubt is never hidden." |
+| 1:50-2:30 | `results/en/evaluation.md`: the table and the calibration lines | "We measured it against the old rule and against a large LLM, on simulated offers, declared as such. Decider gets 94 % right on whether to alert, against 81 % for the old rule. The Bedrock LLM scores the same, a tie, and beats it at grading how good the offer is. What Decider adds is one local call, no cost, no failed calls, and probabilities the code uses to warn when it doubts." |
+| 2:30-2:50 | `patterns/policy/policy_gate.py` and its README | "The pattern is reusable: typed questions, your own function decides, fails closed. One file." |
+| 2:50-3:00 | Repo URL and article title | "Dealjudge, Apache-2.0. Code and article at the link." |
 
-Check before publishing: public link, under 3:00, no third-party brands visible, no copyrighted music, English subtitles on.
+Check before publishing: public link, under 3:00, no third-party brands visible, no copyrighted music, subtitles on,
+every figure matches `results/en/evaluation.json` (0.943, 0.814, 0.938), and the page shown is the final one.

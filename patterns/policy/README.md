@@ -1,6 +1,7 @@
 # `#policy`: a typed question gates a tool call
 
 One file, `policy_gate.py`. It needs `strands-agents` and a running Strands Decider 2B server.
+([Versión en español](README.es.md))
 
 ## What it does
 
@@ -47,12 +48,14 @@ does not run.
 
 ## Things we learned the hard way (measure these on your data)
 
-- **Point the question at the figure.** Asking "is this discount real?" got 53 % on our data;
-  asking "look at the line `real discount vs median`: is it 10 % or more?" got 94 %. Put the
+- **Point the question at the figure.** Asking "is this discount real?" got 53 % on our data
+  (Spanish prompt, dev split); asking "look at the line `real discount vs median`: is it 10 % or more?" got 94 %. Put the
   numbers in the state text and tell the model which line to read.
 - **Do not make it do arithmetic.** A question that needs a price compared with a cap *and* a
   level compared with a minimum was answered correctly less often than chance (37-41 %). Compute
   that in code and keep Decider for the reading.
+- **One language end to end.** The state, the questions and the option names must be in the same language;
+  do not mix a Spanish state with English labels.
 - **`confidence` is not a probability.** For `choice` questions it lives on a low scale
   (a correct pick at P=0.30 reported 0.13). Fit your threshold on a dev split, with a rule that
   only gives a decisive answer when it is right more than half the time.
