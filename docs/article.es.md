@@ -36,7 +36,7 @@ decisión, no el gráfico.
 
 ![La página de Dealjudge: el veredicto, luego las tres respuestas de Decider con su seguridad frente al umbral, y la regla en código](img/page-desktop.es.png)
 
-La página lee datos ya juzgados (`web/data/demo.<idioma>.json`, escritos por `scripts/build_demo.py` con el Decider
+La página también está publicada en https://blasterlc.github.io/dealjudge/?lang=es (datos simulados). Lee datos ya juzgados (`web/data/demo.<idioma>.json`, escritos por `scripts/build_demo.py` con el Decider
 y Bedrock reales). Su búsqueda de "agregar producto" es un catálogo simulado pequeño, no una búsqueda en vivo.
 
 ## Qué medí

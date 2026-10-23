@@ -35,7 +35,7 @@ decision, not the chart.
 
 ![The Dealjudge page: the verdict, then Decider's three answers with their confidence against the threshold, and the code rule](img/page-desktop.png)
 
-The page reads data that was already judged (`web/data/demo.<lang>.json`, written by `scripts/build_demo.py` with
+The page is also published at https://blasterlc.github.io/dealjudge/ (simulated data). It reads data that was already judged (`web/data/demo.<lang>.json`, written by `scripts/build_demo.py` with
 the real Decider and Bedrock). Its "add a product" search is a small simulated catalogue, not a live search.
 
 ## What I measured

@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://blasterlc.github.io/dealjudge/?lang=es"><strong>Página en vivo</strong></a> (datos simulados) ·
   <a href="docs/article.es.md"><strong>Artículo</strong></a> ·
   <a href="patterns/policy/README.es.md">Patrón reutilizable <code>#policy</code></a> ·
   <a href="README.md">English</a>
