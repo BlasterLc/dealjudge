@@ -18,13 +18,12 @@
   <a href="README.md">English</a>
 </p>
 
+<p align="center"><sub>Strands Decider Agent Hackathon (AWS) · etiquetas <code>#strands-decider-2b</code> <code>#policy</code></sub></p>
+
 <p align="center">
   <img alt="Tests" src="https://img.shields.io/badge/tests-116%20passing-1f7a4d" />
   <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-2563eb" />
-  <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-555" />
   <img alt="Decider" src="https://img.shields.io/badge/Strands%20Decider-2B-0a0a0a" />
-  <img alt="Bedrock" src="https://img.shields.io/badge/Amazon%20Bedrock-Nova%20Lite-b5542e" />
-  <img alt="Languages" src="https://img.shields.io/badge/UI-English%20%C2%B7%20Espa%C3%B1ol-555" />
 </p>
 
 <p align="center">
@@ -32,12 +31,6 @@
 </p>
 
 <p align="center"><sub>Video de demostración (2:33), en YouTube · todos los datos mostrados son simulados</sub></p>
-
-> **Strands Decider Agent Hackathon** (AWS) · etiquetas `#strands-decider-2b` `#policy`
-
-![Dealjudge: primero el veredicto y luego cómo decidió Decider: tres respuestas tipadas con su seguridad frente al umbral, y la regla en código](docs/img/page-desktop.png)
-
-*Todo lo que aparece en la captura es simulado; las tiendas son inventadas.*
 
 ## Qué hace
 
@@ -67,6 +60,10 @@ El modelo nunca es la compuerta: Decider mide, `decide` decide.
 **Un idioma por ejecución.** Todo lo que lee el modelo y ve el usuario (texto de estado, preguntas, avisos,
 motivos) sale de `src/dealjudge/i18n.py`, en inglés (por defecto) o en español (`--lang es`). Los identificadores
 internos siempre están en inglés.
+
+![Dealjudge: primero el veredicto y luego cómo decidió Decider: tres respuestas tipadas con su seguridad frente al umbral, y la regla en código](docs/img/page-desktop.png)
+
+*Todo lo que aparece en la captura es simulado; las tiendas son inventadas.*
 
 ## Dónde se ejecuta
 
