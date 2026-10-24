@@ -27,6 +27,12 @@
   <img alt="Languages" src="https://img.shields.io/badge/UI-English%20%C2%B7%20Espa%C3%B1ol-555" />
 </p>
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=UkbYD5juD9w"><img src="docs/img/video-poster.png" alt="Watch the Dealjudge demo video on YouTube (2:33)" width="640" /></a>
+</p>
+
+<p align="center"><sub>Demo video (2:33), on YouTube · all data shown is simulated</sub></p>
+
 > **Strands Decider Agent Hackathon** (AWS) · tags `#strands-decider-2b` `#policy`
 
 ![Dealjudge: the verdict first, then how Decider decided: three typed answers with their confidence against the threshold, and the code rule](docs/img/page-desktop.png)

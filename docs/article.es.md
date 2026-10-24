@@ -155,6 +155,8 @@ SageMaker.
 
 ## Pruébalo
 
-`uv venv && uv pip install -e ".[dev]"`, inicia `strands-decider serve`, luego
-`scripts/run_evaluation.py --lang es`, `scripts/bench_latency_cost.py` para la tabla de latencia y costo, y
+**Sin instalar nada:** abre la [página en vivo](https://blasterlc.github.io/dealjudge/?lang=es) (datos simulados, inglés y español). Reproduce veredictos que el agente y Decider ya produjeron; no es un servicio alojado.
+
+**Ejecútalo tú** (necesita una GPU para Decider y credenciales de AWS para Bedrock): `uv venv && uv pip install -e ".[dev]"`, inicia `strands-decider serve`, luego
+`scripts/run_evaluation.py --lang es` para los resultados, `scripts/bench_latency_cost.py` para la tabla de latencia y costo, y
 `python -m http.server -d web` para la página. Todo es Apache-2.0.

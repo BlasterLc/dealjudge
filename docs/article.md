@@ -148,6 +148,8 @@ products by message and Decider on SageMaker are not built.
 
 ## Try it
 
-`uv venv && uv pip install -e ".[dev]"`, start `strands-decider serve`, then
-`scripts/run_evaluation.py --lang en`, `scripts/bench_latency_cost.py` for the latency and cost table, and
+**Nothing to install:** open the [live page](https://blasterlc.github.io/dealjudge/) (simulated data, English and Spanish). It replays verdicts that the agent and Decider already produced; it is not a hosted service.
+
+**Run it yourself** (needs a GPU for Decider and AWS credentials for Bedrock): `uv venv && uv pip install -e ".[dev]"`, start `strands-decider serve`, then
+`scripts/run_evaluation.py --lang en` for the results, `scripts/bench_latency_cost.py` for the latency and cost table, and
 `python -m http.server -d web` for the page. Everything is Apache-2.0.
