@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.youtube.com/watch?v=UkbYD5juD9w"><strong>Video</strong></a> ·
   <a href="https://blasterlc.github.io/dealjudge/"><strong>Live page</strong></a> (simulated data) ·
   <a href="docs/article.md"><strong>Article</strong></a> ·
   <a href="patterns/policy/README.md">Reusable <code>#policy</code> pattern</a> ·

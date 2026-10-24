@@ -8,7 +8,7 @@ En cada Cyber, el mismo truco: un precio sube unas semanas antes del evento y lu
 estuvo, con un porcentaje rojo enorme al lado. Quería un agente que vigile los productos que me importan y solo me
 moleste cuando el descuento sea **real**, o que me diga con claridad cuando no está seguro.
 
-[Video: enlace aquí] · [Repo: enlace aquí]
+[Video](https://www.youtube.com/watch?v=UkbYD5juD9w) · [Repo](https://github.com/BlasterLc/dealjudge)
 
 ## La decisión que le entregué a Decider 2B
 

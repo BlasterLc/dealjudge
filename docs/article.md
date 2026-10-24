@@ -8,7 +8,7 @@ Every Cyber sale, the same trick: a price goes up a few weeks before the event, 
 always was, with a big red percentage next to it. I wanted an agent that watches the products I care about and
 only bothers me when the discount is **real**, or tells me plainly when it is not sure.
 
-[Video: link here] · [Repo: link here]
+[Video](https://www.youtube.com/watch?v=UkbYD5juD9w) · [Repo](https://github.com/BlasterLc/dealjudge)
 
 ## The decision I handed to Decider 2B
 
