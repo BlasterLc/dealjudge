@@ -31,6 +31,11 @@
   <a href="https://www.youtube.com/watch?v=UkbYD5juD9w"><img src="docs/img/video-poster.png" alt="Watch the Dealjudge demo video on YouTube (2:33)" width="640" /></a>
 </p>
 
+
+
+
+
+https://github.com/user-attachments/assets/5bef0889-b441-4037-baa1-bb509ad1be5d
 <p align="center"><sub>Demo video (2:33), on YouTube · all data shown is simulated</sub></p>
 
 > **Strands Decider Agent Hackathon** (AWS) · tags `#strands-decider-2b` `#policy`
