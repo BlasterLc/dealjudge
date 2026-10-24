@@ -27,10 +27,12 @@
 </p>
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=UkbYD5juD9w"><img src="docs/img/video-poster.png" alt="Ver el video de demostración de Dealjudge en YouTube (2:33)" width="640" /></a>
+
+https://github.com/user-attachments/assets/5bef0889-b441-4037-baa1-bb509ad1be5d
+
 </p>
 
-<p align="center"><sub>Video de demostración (2:33), en YouTube · todos los datos mostrados son simulados</sub></p>
+<p align="center"><sub>Video de demostración (2:33) · también en <a href="https://www.youtube.com/watch?v=UkbYD5juD9w">YouTube</a> · todos los datos mostrados son simulados</sub></p>
 
 ## Qué hace
 
